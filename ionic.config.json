@@ -1,0 +1,8 @@
+{
+  "name": "chatAppUI",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}
