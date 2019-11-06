@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="2">
+          <ion-buttons>
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col size="8">
+          <ion-title class="ion-padding-top">
+            Chat
+          </ion-title>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button color="success" [routerLink]="['/chech']">
+            <ion-icon name="logo-dribbble"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="100" pullMax="100">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-list *ngIf="disable_list">
+    <ion-list-header>
+      Conversacion recientes
+    </ion-list-header>
+    <ion-item *ngFor="let item of list_mensajes" (click)="iniciar_chat(item)">
+      <ion-avatar slot="start">
+        <img [src]="item.emisor.foto ">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ item.emisor.username }}</h2>
+        <h3>Nuevo</h3>
+        <ion-title class="ion-padding-top" color="dark">
+          <p>{{ item.mensaje }}</p>
+        </ion-title>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

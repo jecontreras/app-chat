@@ -1,14 +1,7 @@
-/**
- * Chatter - Chat themes Ionic 4 (https://www.enappd.com)
- *
- * Copyright © 2018-present Enappd. All rights reserved.
- *
- * This source code is licensed as per the terms found in the
- * LICENSE.md file in the root directory of this source .
- * 
- */
-
-
+.perfil {
+    height: 96px;
+    width: 37%;
+}
 
 .scrollContent{
     max-height: 200px;
@@ -21,7 +14,6 @@
 .content{
     height: 100%;
     width: 100%;
-    background-image: url('../assets/images/sidemenu1.jpg');
     background-size: cover;
     background-position: center;
 }

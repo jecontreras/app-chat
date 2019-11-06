@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="2">
+          <ion-buttons>
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col size="8">
+          <ion-title class="ion-padding-top">
+            Ecomerce
+          </ion-title>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button color="success" [routerLink]="['/notificacion']">
+            <ion-icon name="notifications-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="12">
+          <ion-searchbar placeholder="Buscar Ecomerce" animated [(ngModel)]="searchtxt"
+            (change)="search($event)"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="100" pullMax="100">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-item-divider>
+  <ion-slides pager="false" [options]="slideOptsOne" #slideWithNav
+    (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
+    <ion-slide *ngFor="let s of sliderOne.slidesItems">
+      <ion-segment>
+        <ion-segment-button checked [routerLink]="['/listproduct', 123]">
+          <ion-label>{{ s.titulo }}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-slide>
+  </ion-slides>
+  </ion-item-divider>
+  <ion-grid *ngFor="let item of data_app.detalleslist">
+    <ion-row>
+      <ion-item-divider>
+        <ion-col>
+          <ion-text>
+            <h4>{{ item.titulo }}</h4>
+          </ion-text>
+        </ion-col>
+        <ion-col size="3">
+          <ion-text>
+            <h6 [routerLink]="['/listproduct', item.valor]" class="mouse">Más</h6>
+          </ion-text>
+        </ion-col>
+      </ion-item-divider>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-slides pager="false" [options]="slideOptsTho" #slideWithNav
+          (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
+          <ion-slide *ngFor="let off of item.articulos" [routerLink]="['/productoview', off.articulo.id]">
+            <ion-row class="ion-padding">
+              <!-- <ion-img [src]=" off.articulo.foto"></ion-img> -->
+              <ion-img [src]="img"></ion-img>
+              <ion-col size="12">
+                <ion-text color="dark">
+                  <h6 class="text">
+                    {{ off.articulo.titulo }}
+                  </h6>
+                  <h6 class="text">
+                    {{ off.articulo.costopromosion || off.articulo.costoventa }}
+                  </h6>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,270 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="2">
+          <ion-buttons>
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col size="8">
+          <ion-title class="ion-padding-top">
+            Ecomerce
+          </ion-title>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button color="success" [routerLink]="['/notificacion']">
+            <ion-icon name="notifications"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <!-- <ion-col size="12">
+          <ion-searchbar placeholder="Buscar Ecomerce" [(ngModel)]="searchtxt" (input)="search()"></ion-searchbar>
+        </ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <!-- <ion-img *ngIf="data" [src]="data.foto"></ion-img> -->
+        <ion-slides *ngIf="data" pager="true" [options]="slideOptsOne" #slideWithNav
+          (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
+          <ion-slide *ngFor="let s of sliderOne.slidesItems">
+            <img src="{{s.image}}">
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+      <ion-col size="12">
+        <ion-text class="ion-padding-top" color="dark">
+          {{ data.titulo }}
+        </ion-text>
+      </ion-col>
+      <ion-col size="12">
+        <ion-text class="ion-padding-top" color="dark">
+          <ion-label position="floating">Aprox.</ion-label>
+          {{ data.costoventa | currency:'COP':true }}
+          <span>{{ data.envio || 'Envio Gratis'}}</span>
+          <p>{{ data.usb || '0' | currency:'USB':true }}</p>
+          <br>
+          <!-- <span>{{ }}</span> -->
+        </ion-text>
+      </ion-col>
+      <ion-row>
+        <ion-col size="6">
+          {{ data.unidad_vendidas || 0 + " Vendidos" }}
+        </ion-col>
+        <ion-col size="6">
+          {{ "Más de " + data.unidad_vendidas_rango || 0 + "% Vendidos" }}
+        </ion-col>
+      </ion-row>
+      <!-- <ion-col size="12">
+        <ion-label>Cantidad:</ion-label>
+        <ion-select placeholder="Cantidad adquirir" [(ngModel)]="data.cantida_adquiridad">
+          <ion-select-option value="1">1</ion-select-option>
+          <ion-select-option value="2">2</ion-select-option>
+          <ion-select-option value="3">3</ion-select-option>
+          <ion-select-option value="4">4</ion-select-option>
+          <ion-select-option value="5">5</ion-select-option>
+        </ion-select>
+      </ion-col> -->
+      <ion-col size="12">
+        <div class="ion-text-center">
+          <ion-button color="primary" expand="full" (click)="data_chat()" class="ion-padding ion-text-center">¡Compralo
+            ahora!</ion-button>
+          <ion-button color="primary" expand="full" (click)="data_chat()" class="ion-padding ion-text-center">Consultar
+            o Cotizar</ion-button>
+          <ion-button color="primary" expand="full" (click)="fn_favorito()" class="ion-padding ion-text-center">Marcar
+            como favorito</ion-button>
+        </div>
+      </ion-col>
+      <!-- <ion-col size="12">
+        <div class="ion-text-center">
+          <ion-button color="primary" (click)="submit_cart('agregar')" class="ion-padding ion-text-center">Agregar al carro de compras</ion-button>
+        </div>
+      </ion-col> -->
+      <ion-col size="12">
+        <div class="ion-text-center">
+        </div>
+      </ion-col>
+      <ion-col size="12">
+        <ion-item-divider>
+          <ion-text class="ion-padding-top" color="dark">
+            <h5>Sobre este artículo</h5>
+          </ion-text>
+        </ion-item-divider>
+        <ion-row>
+          <ion-col *ngFor="let item of data.list_informacion">
+            <ion-row>
+              <ion-col size="6">
+                <ion-text class="ion-padding-top" color="dark">
+                  <h6>{{ item.key }}</h6>
+                </ion-text>
+              </ion-col>
+              <ion-col size="6">
+                <ion-text class="ion-padding-top" color="dark">
+                  <h6>{{ item.value }}</h6>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-item-divider>
+          <ion-text class="ion-padding-top" color="dark">
+            <h5>Descripción del articulo</h5>
+            <p [innerHtml]="data.descripcion"></p>
+          </ion-text>
+        </ion-item-divider>
+      </ion-col>
+      <ion-col size="12">
+        <ion-item-divider>
+          <ion-text color="dark">
+            <h5>
+              Envíos, devoluciones y pagos
+            </h5>
+          </ion-text>
+        </ion-item-divider>
+        <ion-row>
+          <ion-col *ngFor="let item of data.list_envios">
+            <ion-row>
+              <ion-col size="6">
+                <ion-text class="ion-padding-top" color="dark">
+                  <h6>{{ item.key }}</h6>
+                </ion-text>
+              </ion-col>
+              <ion-col size="6">
+                <ion-text class="ion-padding-top" color="dark">
+                  <h6>{{ item.value }}</h6>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <!-- <ion-col size="12">
+        <ion-item-divider>
+          <ion-text color="dark">
+            <h5>Articulos patrocinados relacionados</h5>
+          </ion-text>
+        </ion-item-divider>
+        <ion-slides pager="false" [options]="slideOptsThree" #slideWithNav3
+          (ionSlideDidChange)="SlideDidChange(sliderThree,slideWithNav3)">
+          <ion-slide *ngFor="let s of sliderOne.slidesItems">
+            <img src="{{s.image}}">
+          </ion-slide>
+        </ion-slides>
+      </ion-col> -->
+      <ion-col size="12">
+        <ion-item-divider>
+          <ion-text color="dark">
+            <h5>
+              Compra con confianza
+            </h5>
+          </ion-text>
+        </ion-item-divider>
+        <!-- <ion-list>
+          <ion-item *ngFor="let item of list_comentario_vendedor">
+            <ion-avatar slot="start">
+              <img [src]="item.foto || './assets/imagenes/dilisap1.png'">
+            </ion-avatar>
+            <ion-label>
+              <ion-text class="ion-padding-top" color="dark">
+                <h2>{{ item.username }}</h2>
+                <h3>{{ item.titulo }}</h3>
+                <p>{{ item.comentario }}</p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+        </ion-list> -->
+      </ion-col>
+      <ion-col size="12">
+        <ion-item-divider>
+          <ion-text color="dark">
+            <h5>
+              Sobre este vendedor
+            </h5>
+          </ion-text>
+        </ion-item-divider>
+        <ion-list>
+          <ion-item>
+            <ion-avatar slot="start">
+              <img [src]="data.user.foto || './assets/imagenes/dilisap1.png'">
+            </ion-avatar>
+            <ion-label>
+              <ion-text class="ion-padding-top" color="dark">
+                <h2>{{ data.user.username }}</h2>
+                <p>{{ data.user.nivel || 5 + ' comentarios positivos'}}</p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+          <div class="ion-text-center" color="primary">
+            <ion-item-divider>
+              <ion-text color="dark">
+                <h5>Más informacion</h5>
+              </ion-text>
+            </ion-item-divider>
+          </div>
+          <ion-row>
+            <!-- <ion-col size="10">
+              <ion-item-divider>
+                <ion-text color="dark">
+                  <h6>Otros articulos del vendedor</h6>
+                </ion-text>
+              </ion-item-divider>
+            </ion-col>
+            <ion-col size="2">
+              <ion-icon class="ion-padding-top" name="arrow-dropright"></ion-icon>
+            </ion-col> -->
+            <ion-col size="10">
+              <ion-item-divider>
+                <ion-text color="dark">
+                  <h6>Contactar al vendedor</h6>
+                </ion-text>
+              </ion-item-divider>
+            </ion-col>
+            <ion-col size="2">
+              <ion-icon (click)="data_chat()" class="ion-padding-top" name="arrow-dropright"></ion-icon>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-list>
+      </ion-col>
+      <ion-col size="12">
+        <ion-item-divider>
+          <ion-text color="dark">
+            <h5>Otras personas también compraron</h5>
+          </ion-text>
+        </ion-item-divider>
+        <ion-slides pager="false" [options]="slideOptsFoor" #slideWithNav4
+          (ionSlideDidChange)="SlideDidChange(sliderFoor,slideWithNav4)">
+          <ion-slide *ngFor="let item of sliderTho.slidesItems">
+            <img src="{{item.foto || img}}">
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+      <ion-col size="12">
+        <div class="ion-text-center">
+          <ion-button color="primary" expand="full" class="ion-padding ion-text-center">Compartir</ion-button>
+          <ion-button color="primary" expand="full" class="ion-padding ion-text-center">Denunciar un articulo
+          </ion-button>
+        </div>
+      </ion-col>
+      <ion-col size="12">
+        <ion-item-divider>
+          <ion-text color="dark">
+            <h5>Otras articulos que te pueden gustar</h5>
+          </ion-text>
+        </ion-item-divider>
+        <ion-slides pager="false" [options]="slideOptsFive" #slideWithNav5
+          (ionSlideDidChange)="SlideDidChange(sliderFive,slideWithNav5)">
+          <ion-slide *ngFor="let item of sliderThree.slidesItems">
+            <img src="{{item.foto || img}}">
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

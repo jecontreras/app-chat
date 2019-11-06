@@ -1,0 +1,25 @@
+export interface COMPRAS {
+    user: String;
+    cantidad: Number;
+    total: Number;
+    cartpago: Object;
+    cartpadre: Object;
+    subtotal: Number;
+    estado: String;
+    ciudad: String;
+    codigo: String;
+    codigoglobal: String;
+    valorentrega: Number;
+    fechaentrega: String;
+    fechamaxima:  String;
+    costoenvio: Number;
+    empresa: Object;
+    pais: String;
+    provivencia: String;
+    direccion1: String;
+    direccion2: String;
+    descuento:  Number;
+    codigopostal: String;
+    terminocondicione: Boolean;
+    suscribete: Boolean;
+};

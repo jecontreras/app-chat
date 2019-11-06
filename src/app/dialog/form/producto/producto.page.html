@@ -1,0 +1,186 @@
+<ion-header translucent>
+    <ion-toolbar>
+        <ion-title *ngIf="!evento.id">Crear Productos</ion-title>
+        <ion-title *ngIf="evento.id">Editar Productos</ion-title>
+        <ion-button slot="end" (click)="cerrarModal()">
+            <ion-icon name="close-circle-outline"></ion-icon>
+        </ion-button>
+        <ion-button [disabled]="!disable_button" *ngIf="!evento.id" (click)="submit()" slot="end" color="success">
+            <ion-icon name="save"></ion-icon>
+        </ion-button>
+        <ion-button [disabled]="!disable_button" *ngIf="evento.id" (click)="editar()" slot="end" color="success">
+            <ion-icon name="create"></ion-icon>
+        </ion-button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+    <ion-list>
+        <ion-item>
+            <ion-slides pager="true" [options]="slideOptsOne" #slideWithNav
+                (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
+                <ion-slide *ngFor="let s of sliderOne.slidesItems">
+                    <img src="{{s.image}}">
+                </ion-slide>
+            </ion-slides>
+        </ion-item>
+        <div>
+            <ion-toolbar>
+                <ion-text color="dark" slot="primary">
+                    <h5> Galeria </h5>
+                </ion-text>
+                <ion-buttons slot="primary">
+                    <!-- <ion-input type="file" (change)="view_image($event)"></ion-input> -->
+                    <ion-button (click)="getImages()">
+                        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </div>
+    </ion-list>
+    <form [formGroup]="myForm_product">
+        <ion-list>
+            <ion-item>
+                <!-- <ion-icon name="at" item-start></ion-icon> -->
+                <ion-label position="floating">Codigo</ion-label>
+                <ion-input formControlName="codigo" type="text" placeholder="Codigo del Producto">
+                </ion-input>
+            </ion-item>
+            <ion-item>
+                <!-- <ion-icon name="filing" item-start></ion-icon> -->
+                <ion-label position="floating">Nombre</ion-label>
+                <ion-input formControlName="titulo" type="text" placeholder="Nombre del producto">
+                </ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-button (click)="get_cateogria()">
+                    <ion-icon name="sync"></ion-icon>
+                </ion-button>
+                <ion-list>
+                    <ion-item>
+                        <ion-label>Categoria</ion-label>
+                        <ion-select formControlName="categoria">
+                            <ion-select-option *ngFor="let item of list_categoria" [value]="item.categoria">
+                                {{ item.categoria }}
+                            </ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
+            </ion-item>
+            <ion-item>
+                <ion-button (click)="get_marca()">
+                    <ion-icon name="sync"></ion-icon>
+                </ion-button>
+                <ion-list>
+                    <ion-item>
+                        <ion-label>Marca</ion-label>
+                        <ion-select formControlName="marca">
+                            <ion-select-option *ngFor="let item of list_marca" [value]="item.categoria">
+                                {{ item.categoria }}
+                            </ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
+            </ion-item>
+            <ion-item>
+                <ion-button (click)="get_color()">
+                    <ion-icon name="sync"></ion-icon>
+                </ion-button>
+                <ion-list>
+                    <ion-item>
+                        <ion-label>Color</ion-label>
+                        <ion-select formControlName="color">
+                            <ion-select-option *ngFor="let item of list_color" [value]="item.color">
+                                {{ item.color }}
+                            </ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
+            </ion-item>
+            <ion-item>
+                <!-- <ion-icon name="keypad" item-start></ion-icon> -->
+                <ion-label position="floating">Cantidad</ion-label>
+                <ion-input formControlName="cantidad" type="number" placeholder="Cantidad de Unidades">
+                </ion-input>
+            </ion-item>
+            <ion-item>
+                <!-- <ion-icon name="cash" item-start></ion-icon> -->
+                <ion-label position="floating">Precio de Venta</ion-label>
+                <ion-input formControlName="costoventa" type="number" placeholder="Precio del Producto">
+                </ion-input>
+            </ion-item>
+            <ion-item>
+                <!-- <ion-icon name="cash" item-start></ion-icon> -->
+                <ion-label position="floating">Precio minimo</ion-label>
+                <ion-input formControlName="costopromosion" type="number"
+                    placeholder="Precio de Promision del Producto"></ion-input>
+            </ion-item>
+            <ion-item>
+                <!-- <ion-icon name="cash" item-start></ion-icon> -->
+                <ion-label position="floating">Descripcion</ion-label>
+                <ion-textarea formControlName="descripcion" placeholder="Descripcion del Producto" rows="6" cols="20">
+                </ion-textarea>
+            </ion-item>
+        </ion-list>
+        <div padding>
+        </div>
+    </form>
+    <div class="ion-padding">
+        <ion-toolbar>
+            <ion-text color="dark" slot="primary">
+                <h5> Informacion del Articulo </h5>
+            </ion-text>
+            <ion-buttons slot="primary">
+                <ion-button (click)="data.list_informacion.push({})">
+                    <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+        <ion-list>
+            <ion-item *ngFor="let item of data.list_informacion">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-label position="floating">Titulo de la informacion</ion-label>
+                            <ion-input [(ngModel)]="item.key" type="text" placeholder="titulo"></ion-input>
+                        </ion-col>
+                        <ion-col size="12">
+                            <ion-label position="floating">Descripcion de la Informacion</ion-label>
+                            <ion-input [(ngModel)]="item.value" type="text" placeholder="Descripcion"></ion-input>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+        </ion-list>
+    </div>
+    <div class="ion-padding">
+        <ion-toolbar>
+            <ion-text color="dark" slot="primary">
+                <h5> Informacion Envíos, devoluciones y pagos </h5>
+            </ion-text>
+            <ion-buttons slot="primary">
+                <ion-button (click)="data.list_envios.push({})">
+                    <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+        <ion-list>
+            <ion-item *ngFor="let item of data.list_envios">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-label position="floating">Titulo del Envio</ion-label>
+                            <ion-input [(ngModel)]="item.key" type="text" placeholder="titulo"></ion-input>
+                        </ion-col>
+                        <ion-col size="12">
+                            <ion-label position="floating">Descripcion del Envio</ion-label>
+                            <ion-input [(ngModel)]="item.value" type="text" placeholder="Descripcion"></ion-input>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+        </ion-list>
+    </div>
+
+
+</ion-content>

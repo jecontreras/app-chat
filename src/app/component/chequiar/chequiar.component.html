@@ -1,0 +1,95 @@
+<ion-header>
+    <ion-toolbar color="success">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="2">
+            <ion-buttons>
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+          </ion-col>
+          <ion-col size="8">
+            <ion-title class="ion-padding-top">
+              Ecomerce
+            </ion-title>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button color="success" [routerLink]="['/chech']">
+              <ion-icon name="logo-dribbble"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+            <ion-text class="ion-padding-top" color="dark">
+              <h6>Carro de compras</h6>
+            </ion-text>
+        </ion-col>
+        <ion-col size="12">
+            <ion-button color="primary" expand="full" fill="outline">Completar la transacción</ion-button>
+            <ion-row>
+                <ion-col size="6">
+                  Total ( {{ data.count_articulo + " articulos"}})
+                </ion-col>
+                <ion-col size="6">
+                    {{ data.costo_total | currency:'COP':true }}
+                </ion-col>
+            </ion-row>
+        </ion-col>
+        <ion-col size="12" *ngFor="let item of list_articulo">
+          <ion-row>
+            <ion-col size="9">
+                <ion-text color="dark">
+                  <!-- <h6>{{ item.user.name }}</h6> -->
+                  <h6>Username</h6>
+                </ion-text>
+            </ion-col>
+            <ion-col  size="3">
+                <ion-text>
+                  <h6 [routerLink]="['/categoria']" >Más opciones</h6>
+                </ion-text>
+            </ion-col>
+            <ion-col>
+              <ion-row>
+                <ion-col size="3">
+                    <div class="ion-margin-top">
+                        <ion-img *ngIf="data" [src]="item.foto"></ion-img>
+                    </div>
+                </ion-col>
+                <ion-col size="5">
+                    <ion-text>
+                      <h6 [routerLink]="['/productoview', item.id]" >
+                        {{ item.titulo }}
+                      </h6>
+                      <p>{{ item.color || 'negro' }} &nbsp; {{ item.estado }} </p>
+                    </ion-text>
+                </ion-col>
+                <ion-col size="4">
+                    <ion-text>
+                        <h6>{{ item.costopromosion || item.costoventa | currency:'COP':true }} </h6>
+                        <p>{{ item.envio || 'gratis' }}</p>
+                    </ion-text>
+                    <div>
+                        <ion-label position="floating">Cant.</ion-label>
+                        <ion-input class="opacidad" (keyup)="obj_cart()" [(ngModel)]="item.cantida_adquiridad" type="number" placeholder="Cantidad de Unidades"></ion-input>
+                    </div>
+                </ion-col>
+              </ion-row>
+              <ion-col size="12">
+                <div class="ion-text-end">
+                    <ion-text>
+                        <h6 color="primary" (click)="btn_guardar(item)">Guardar para después</h6>
+                        <h6 color="primary" >Eliminar</h6>
+                    </ion-text>
+                </div>
+              </ion-col>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>

@@ -1,239 +1,71 @@
-/**
- * Chatter - Chat themes Ionic 4 (https://www.enappd.com)
- *
- * Copyright © 2018-present Enappd. All rights reserved.
- *
- * This source code is licensed as per the terms found in the
- * LICENSE.md file in the root directory of this source .
- * 
- */
-
-
-
 import { Component } from '@angular/core';
 
-import { Platform, AlertController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { USER } from './redux/interfax/user';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  public showListToggle = false;
-  public showScreenToggle = false;
-
-  public ChatLists = [
+  public appPages = [
     {
-      title: 'Elegance',
-      url: 'elegance',
-      icon: 'list',
-      type:'free'
+      title: 'Inicio',
+      url: '/home',
+      icon: 'home'
     },
     {
-      title: 'Pastry',
-      url: 'pastry',
-      icon: 'list',
-      type:'free'
+      title: 'Notificaciones',
+      url: '/notificacion',
+      icon: 'notifications-outline'
     },
     {
-      title: 'Artboard',
-      icon: 'list',
-      type:'paid'
-    },
-    {
-      title: 'Crisp',
-      url: 'elegance',
-      icon: 'list',
-      type:'paid'
-    },
-    {
-      title: 'Dazed',
-      icon: 'list',
-      type:'paid'
-    },
-    
-    {
-      title: 'Purple',
-      icon: 'list',
-      type:'paid'
-    },
-    {
-      title: 'Regular',
-      url: 'elegance',
-      icon: 'list',
-      type:'paid'
-    },
-    {
-      title: 'Rose',
-      icon: 'list',
-      type:'paid'
-    },
-    {
-      title: 'Utility',
-      url: 'elegance',
-      icon: 'list',
-      type:'paid'
-    },
-    {
-      title: 'Variety',
-      icon: 'list',
-      type:'paid'
+      title: 'Mensajes',
+      url: '/chat',
+      icon: 'mail-unread'
     }
-  ]
-  public ChatScreens = [
-    
+  ];
+  public appTienda = [
     {
-      title: 'Fluid',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'free'
+      title: 'Productos',
+      url: '/product',
+      icon: 'filing'
     },
     {
-      title: 'Business',
-      url: 'business',
-      icon: 'chatboxes',
-      type:'free'
+      title: 'Anuncios',
+      url: '/chat',
+      icon: 'megaphone'
     },
     {
-      title: 'Bubble',
-      url: 'bubble',
-      icon: 'chatboxes',
-      type: 'free'
+      title: 'Subastas',
+      url: '/subastas',
+      icon: 'hammer'
     },
     {
-      title: 'Alien',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Blocks',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Breeze',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Classic',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Delicate',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Morning Dew',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Dusk',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Elegance',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Flame',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Flower',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Galaxy',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Hearty',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Icecream',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Intelligent',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Marine',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Minimal',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Modern',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Professional',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Starbucks',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
-    },
-    {
-      title: 'Sunrise',
-      url: 'fluid',
-      icon: 'chatboxes',
-      type: 'paid'
+      title: 'Negocios',
+      url: '/chat',
+      icon: 'contacts'
     }
-  ]
+  ];
+  public data:any = {};
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private route:Router,
-    public alertCtrl:AlertController
+    private _store: Store<USER>
   ) {
     this.initializeApp();
+
+    this._store.select("name")
+    .subscribe((store:any)=>{
+      console.log(store);
+      this.data = store.user || {};
+    });
   }
 
   initializeApp() {
@@ -241,35 +73,5 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
-  }
-
-  showList(){
-    this.showScreenToggle = false
-    this.showListToggle = !this.showListToggle;
-  }
-  showScreens(){
-    this.showListToggle = false;
-    this.showScreenToggle = ! this.showScreenToggle
-  }
-
-  pageRedirect(page){
-    console.log(page)
-    if(page.type == 'free'){
-      console.log('free')
-      this.route.navigate([page.url])
-    }
-    else{
-     this.presentAlert() 
-    }
-    
-  }
-  async presentAlert() {
-    const alert = await this.alertCtrl.create({
-      header: 'Paid Template',
-      message: 'This is only Available in Paid Version.',
-      buttons: ['OK']
-    });
-
-    await alert.present();
   }
 }

@@ -1,12 +1,6 @@
-/**
- * Chatter - Chat themes Ionic 4 (https://www.enappd.com)
- *
- * Copyright © 2018-present Enappd. All rights reserved.
- *
- * This source code is licensed as per the terms found in the
- * LICENSE.md file in the root directory of this source .
- * 
- */
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
 
 export const environment = {
   production: false

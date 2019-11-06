@@ -1,0 +1,126 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="2">
+          <ion-buttons>
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col size="8">
+          <ion-title class="ion-padding-top">
+            Notificaciones
+          </ion-title>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button color="success" [routerLink]="['/chech']">
+            <ion-icon name="logo-dribbble"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="100" pullMax="100">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-list *ngIf="disable_list && list_notificacion.length >=1">
+    <ion-item *ngFor="let item of list_notificacion" (click)="view(item)">
+      <ion-avatar slot="start">
+        <img src="./assets/imagenes/product.jpg">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ item.titulo }}</h2>
+        <h3>{{ item.articulo.titulo }}</h3>
+        <ion-text color="dark">
+          <p>{{ item.descripcion }}</p>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+
+  <!-- <h3>Nature</h3>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1">
+        <span class="slider-nav arrow-prev" (click)="slidePrev(sliderOne,slideWithNav)">
+          <div class="prev-icon-custom custon-nav" [class.disabled]="sliderOne.isBeginningSlide"></div>
+        </span>
+      </ion-col>
+      <ion-col size="10">
+
+        <ion-slides pager="true" [options]="slideOptsOne" #slideWithNav
+          (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
+          <ion-slide *ngFor="let s of sliderOne.slidesItems">
+            <img src="{{s.image}}">
+          </ion-slide>
+        </ion-slides>
+
+      </ion-col>
+      <ion-col size="1">
+        <span class="slider-nav arrow-next" (click)="slideNext(sliderOne,slideWithNav)">
+          <div class="next-icon-custom custon-nav" [class.disabled]="sliderOne.isEndSlide"></div>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <h3>Food</h3>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1">
+        <span class="slider-nav arrow-prev" (click)="slidePrev(sliderTwo,slideWithNav2)">
+          <div class="prev-icon-custom custon-nav" [class.disabled]="sliderTwo.isBeginningSlide"></div>
+        </span>
+      </ion-col>
+      <ion-col size="10">
+
+        <ion-slides pager="false" [options]="slideOptsTwo" #slideWithNav2
+          (ionSlideDidChange)="SlideDidChange(sliderTwo,slideWithNav2)">
+          <ion-slide *ngFor="let s of sliderTwo.slidesItems">
+              <img src="{{s.image}}">
+          </ion-slide>
+        </ion-slides>
+
+      </ion-col>
+      <ion-col size="1">
+        <span class="slider-nav arrow-next" (click)="slideNext(sliderTwo,slideWithNav2)">
+          <div class="next-icon-custom custon-nav" [class.disabled]="sliderTwo.isEndSlide"></div>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <h3>Fashion</h3>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1">
+        <span class="slider-nav arrow-prev" (click)="slidePrev(sliderThree,slideWithNav3)">
+          <div class="prev-icon-custom custon-nav" [class.disabled]="sliderThree.isBeginningSlide"></div>
+        </span>
+      </ion-col>
+      <ion-col size="10">
+
+        <ion-slides pager="false" [options]="slideOptsThree" #slideWithNav3
+          (ionSlideDidChange)="SlideDidChange(sliderThree,slideWithNav3)">
+          <ion-slide *ngFor="let s of sliderThree.slidesItems">
+              <img src="{{s.image}}">
+          </ion-slide>
+        </ion-slides>
+
+      </ion-col>
+      <ion-col size="1">
+        <span class="slider-nav arrow-next" (click)="slideNext(sliderThree,slideWithNav3)">
+          <div class="next-icon-custom custon-nav" [class.disabled]="sliderThree.isEndSlide"></div>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+</ion-content>

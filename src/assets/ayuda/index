@@ -1,0 +1,321 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="2">
+          <ion-buttons>
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col size="8">
+          <ion-title class="ion-padding-top">
+            Notificaciones
+          </ion-title>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button color="success" [routerLink]="['/chech']">
+            <ion-icon name="logo-dribbble"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <!-- <ion-list>
+    <ion-list-header>
+      Recent Conversations
+    </ion-list-header>
+
+    <ion-item>
+      <ion-avatar slot="start">
+        <img src="./assets/imagenes/product.jpg">
+      </ion-avatar>
+      <ion-label>
+        <h2>Finn</h2>
+        <h3>I'm a big deal</h3>
+        <p>Listen, I've had a pretty messed up day...</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-avatar slot="start">
+        <img src="./assets/imagenes/product.jpg">
+      </ion-avatar>
+      <ion-label>
+        <h2>Han</h2>
+        <h3>Look, kid...</h3>
+        <p>I've got enough on my plate as it is, and I...</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-avatar slot="start">
+        <img src="./assets/imagenes/product.jpg">
+      </ion-avatar>
+      <ion-label>
+        <h2>Rey</h2>
+        <h3>I can handle myself</h3>
+        <p>You will remove these restraints and leave...</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-avatar slot="start">
+        <img src="./assets/imagenes/product.jpg">
+      </ion-avatar>
+      <ion-label>
+        <h2>Luke</h2>
+        <h3>Your thoughts betray you</h3>
+        <p>I feel the good in you, the conflict...</p>
+      </ion-label>
+    </ion-item>
+  </ion-list> -->
+
+
+  <h3>Nature</h3>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1">
+        <span class="slider-nav arrow-prev" (click)="slidePrev(sliderOne,slideWithNav)">
+          <div class="prev-icon-custom custon-nav" [class.disabled]="sliderOne.isBeginningSlide"></div>
+        </span>
+      </ion-col>
+      <ion-col size="10">
+
+        <ion-slides pager="true" [options]="slideOptsOne" #slideWithNav
+          (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
+          <ion-slide *ngFor="let s of sliderOne.slidesItems">
+            <img src="{{s.image}}">
+          </ion-slide>
+        </ion-slides>
+
+      </ion-col>
+      <ion-col size="1">
+        <span class="slider-nav arrow-next" (click)="slideNext(sliderOne,slideWithNav)">
+          <div class="next-icon-custom custon-nav" [class.disabled]="sliderOne.isEndSlide"></div>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <h3>Food</h3>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1">
+        <span class="slider-nav arrow-prev" (click)="slidePrev(sliderTwo,slideWithNav2)">
+          <div class="prev-icon-custom custon-nav" [class.disabled]="sliderTwo.isBeginningSlide"></div>
+        </span>
+      </ion-col>
+      <ion-col size="10">
+
+        <ion-slides pager="false" [options]="slideOptsTwo" #slideWithNav2
+          (ionSlideDidChange)="SlideDidChange(sliderTwo,slideWithNav2)">
+          <ion-slide *ngFor="let s of sliderTwo.slidesItems">
+              <img src="{{s.image}}">
+          </ion-slide>
+        </ion-slides>
+
+      </ion-col>
+      <ion-col size="1">
+        <span class="slider-nav arrow-next" (click)="slideNext(sliderTwo,slideWithNav2)">
+          <div class="next-icon-custom custon-nav" [class.disabled]="sliderTwo.isEndSlide"></div>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <h3>Fashion</h3>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1">
+        <span class="slider-nav arrow-prev" (click)="slidePrev(sliderThree,slideWithNav3)">
+          <div class="prev-icon-custom custon-nav" [class.disabled]="sliderThree.isBeginningSlide"></div>
+        </span>
+      </ion-col>
+      <ion-col size="10">
+
+        <ion-slides pager="false" [options]="slideOptsThree" #slideWithNav3
+          (ionSlideDidChange)="SlideDidChange(sliderThree,slideWithNav3)">
+          <ion-slide *ngFor="let s of sliderThree.slidesItems">
+              <img src="{{s.image}}">
+          </ion-slide>
+        </ion-slides>
+
+      </ion-col>
+      <ion-col size="1">
+        <span class="slider-nav arrow-next" (click)="slideNext(sliderThree,slideWithNav3)">
+          <div class="next-icon-custom custon-nav" [class.disabled]="sliderThree.isEndSlide"></div>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+
+
+import { Component, OnInit, ViewChild, ViewChildren  } from '@angular/core';
+import { IonSlides } from '@ionic/angular';
+@Component({
+  selector: 'app-notificaciones',
+  templateUrl: './notificaciones.component.html',
+  styleUrls: ['./notificaciones.component.scss'],
+})
+export class NotificacionesComponent implements OnInit {
+
+  @ViewChildren('slideWithNav') slideWithNav: IonSlides;
+  @ViewChildren('slideWithNav2') slideWithNav2: IonSlides;
+  @ViewChildren('slideWithNav3') slideWithNav3: IonSlides;
+
+  sliderOne: any;
+  sliderTwo: any;
+  sliderThree: any;
+
+   //Configuration for each Slider
+   slideOptsOne = {
+    initialSlide: 0,
+    slidesPerView: 1,
+    autoplay:true
+  };
+  slideOptsTwo = {
+    initialSlide: 1,
+    slidesPerView: 2,
+    loop: true,
+    centeredSlides: true
+  };
+  slideOptsThree = {
+    initialSlide: 0,
+    slidesPerView: 3
+  };
+
+  constructor() { }
+
+  ngOnInit() {
+    //Item object for Nature
+    this.sliderOne =
+      {
+        isBeginningSlide: true,
+        isEndSlide: false,
+        slidesItems: [
+          {
+            id: 1,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 2,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 3,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 4,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 5,
+            image: './assets/imagenes/dilisap1.png'
+          }
+        ]
+      };
+    //Item object for Food
+    this.sliderTwo =
+      {
+        isBeginningSlide: true,
+        isEndSlide: false,
+        slidesItems: [
+          {
+            id: 6,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 7,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 8,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 9,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 10,
+            image: './assets/imagenes/dilisap1.png'
+          }
+        ]
+      };
+    //Item object for Fashion
+    this.sliderThree =
+      {
+        isBeginningSlide: true,
+        isEndSlide: false,
+        slidesItems: [
+          {
+            id: 11,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 12,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 13,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 14,
+            image: './assets/imagenes/dilisap1.png'
+          },
+          {
+            id: 15,
+            image: './assets/imagenes/dilisap1.png'
+          }
+        ]
+      };
+  }
+  //Move to Next slide
+  slideNext(object, slideView) {
+    slideView.slideNext(500).then(() => {
+      this.checkIfNavDisabled(object, slideView);
+    });
+  }
+ 
+  //Move to previous slide
+  slidePrev(object, slideView) {
+    slideView.slidePrev(500).then(() => {
+      this.checkIfNavDisabled(object, slideView);
+    });;
+  }
+ 
+  //Method called when slide is changed by drag or navigation
+  SlideDidChange(object, slideView) {
+    this.checkIfNavDisabled(object, slideView);
+  }
+ 
+  //Call methods to check if slide is first or last to enable disbale navigation  
+  checkIfNavDisabled(object, slideView) {
+    this.checkisBeginning(object, slideView);
+    this.checkisEnd(object, slideView);
+  }
+ 
+  checkisBeginning(object, slideView) {
+    slideView.isBeginning().then((istrue) => {
+      object.isBeginningSlide = istrue;
+    });
+  }
+  checkisEnd(object, slideView) {
+    slideView.isEnd().then((istrue) => {
+      object.isEndSlide = istrue;
+    });
+  }
+
+
+
+}

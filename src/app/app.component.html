@@ -1,45 +1,53 @@
 <ion-app>
-  <ion-menu>
-    <ion-header translucent>
-      <ion-toolbar color="dark" >
-        <ion-title>Chat Themes</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content fullscreen="true">
-      <div class="content ">
-        <ion-list lines="none" class="transparent">
-          <ion-list-header class="transparent">
-            <ion-label color="light">Chat List</ion-label>
-          </ion-list-header>
-          <div class="scrollContent transparent list-bottom-shadow">
-            <ion-menu-toggle auto-hide="false">
-              <ion-item class="transparent" *ngFor="let p of ChatLists">
-                <ion-icon name="list" color="light" slot="start"></ion-icon>
-                <ion-label (click)="pageRedirect(p)" color="light">{{p.title}}</ion-label>
-                <ion-note *ngIf="p.type=='free'" color="light" class="notes">FREE</ion-note>
-              </ion-item>
-            </ion-menu-toggle>
+  <ion-split-pane>
+    <ion-menu>
+      <ion-header translucent>
+        <ion-toolbar class="ion-padding" color="success">
+          <div>
+            <ion-avatar class="perfil">
+              <img [src]=" data.foto || 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y'">
+            </ion-avatar>
           </div>
+        </ion-toolbar>
+        <ion-toolbar color="success">
+          <ion-buttons slot="secondary">
+            <ion-button class="ion-padding-top" [routerLink]="['/perfil']">
+              <ion-icon slot="icon-only" name="arrow-dropdown"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-title>
+            <h6>{{ data.name }}</h6>
+          </ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+            <ion-item [routerLink]="[p.url]">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                <h6>{{p.title}}</h6>
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <div class="ion-padding">
+            <ion-item-divider>
+              <ion-text color="dark">
+                <h6>Mi Tienda</h6>
+              </ion-text>
+            </ion-item-divider>
+          </div>
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appTienda">
+            <ion-item [routerLink]="[p.url]">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                <h6>{{p.title}}</h6>
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ion-list>
-
-        <div>
-          <ion-list lines="none" class="transparent">
-            <ion-list-header class="transparent">
-              <ion-label color="light">Chat Screens</ion-label>
-            </ion-list-header>
-            <div class="scrollContent transparent list-bottom-shadow">
-              <ion-menu-toggle auto-hide="false">
-                <ion-item class="transparent" *ngFor="let p of ChatScreens">
-                  <ion-icon name="chatboxes" color="light" slot="start"></ion-icon>
-                  <ion-label (click)="pageRedirect(p)" color="light">{{p.title}}</ion-label>
-                  <ion-note *ngIf="p.type=='free'" color="light" class="notes">FREE</ion-note>
-                </ion-item>
-              </ion-menu-toggle>
-            </div>
-          </ion-list>
-        </div>
-      </div>
-    </ion-content>
-  </ion-menu>
-  <ion-router-outlet main></ion-router-outlet>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet main></ion-router-outlet>
+  </ion-split-pane>
 </ion-app>

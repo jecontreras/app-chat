@@ -1,15 +1,32 @@
-/**
- * Chatter - Chat themes Ionic 4 (https://www.enappd.com)
- *
- * Copyright © 2018-present Enappd. All rights reserved.
- *
- * This source code is licensed as per the terms found in the
- * LICENSE.md file in the root directory of this source .
- * 
- */
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
 :root {
+  #ion-content-login {
+      --ion-background-color:#90f1b6;
+  }
+  .ion-button-login {
+    --ion-color: green;
+  }
+  .prev-icon-custom{
+    --background: url(../assets/imagenes/dilisap1.png) 0 0/100% 100% no-repeat;
+  }
+  .prev-icon-custom.disabled{
+      opacity: 0.4;
+      cursor: default;
+  }
+  .next-icon-custom{
+      --background: url(../assets/imagenes/dilisap1.png) 0 0/100% 100% no-repeat;
+  }
+  @font-face {
+    font-family: 'EB Garamond', serif;
+    src: url('https://fonts.googleapis.com/css?family=EB+Garamond&display=swap');//mine
+  }
+  
+  * {
+    font-family: 'EB Garamond', serif;
+  }
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -81,19 +98,4 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
-
-  --ion-color-header:#224068;
-  --ion-color-success-rgb: 34, 64, 104;
-  --ion-color-success-contrast: #ffffff;
-  --ion-color-success-contrast-rgb: 255, 255, 255;
 }
-.header{
-  --background:#224068;
-}
-.headerColor{
-  --color:#fff;
-   color:#fff;
-}
-
-
-

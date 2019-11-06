@@ -1,15 +1,3 @@
-/**
- * Chatter - Chat themes Ionic 4 (https://www.enappd.com)
- *
- * Copyright © 2018-present Enappd. All rights reserved.
- *
- * This source code is licensed as per the terms found in the
- * LICENSE.md file in the root directory of this source .
- * 
- */
-
-
-
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 
@@ -72,7 +60,7 @@ describe('AppComponent', () => {
     const app = fixture.nativeElement;
     const menuItems = app.querySelectorAll('ion-item');
     expect(menuItems.length).toEqual(2);
-    expect(menuItems[0].getAttribute('ng-reflect-router-link')).toEqual('/home');
+    expect(menuItems[0].getAttribute('ng-reflect-router-link')).toEqual('/component/home');
     expect(menuItems[1].getAttribute('ng-reflect-router-link')).toEqual('/list');
   });
 
