@@ -64,8 +64,8 @@
           (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
           <ion-slide *ngFor="let off of item.articulos" [routerLink]="['/productoview', off.articulo.id]">
             <ion-row class="ion-padding">
-              <!-- <ion-img [src]=" off.articulo.foto"></ion-img> -->
-              <ion-img [src]="img"></ion-img>
+              <ion-img [src]=" off.articulo.foto"></ion-img>
+              <!-- <ion-img [src]="img"></ion-img> -->
               <ion-col size="12">
                 <ion-text color="dark">
                   <h6 class="text">

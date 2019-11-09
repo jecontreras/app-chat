@@ -15,7 +15,7 @@ export class ArchivoService {
   ) {
   }
   get(query: any){
-    return this._model.query('archivo', query);
+    return this._model.query('galeria', query);
   }
   saved (query: any){
     let postData = new FormData();
@@ -26,7 +26,7 @@ export class ArchivoService {
     return this._model.create('galeria/file', query);
   }
 
-  async upload(file_array:any){
+  async upload(file_array:any, data:any){
     let FileTransfer: FileTransferObject = this.transfer.create();
 
     let random = Math.floor(Math.random() * 100);
@@ -37,13 +37,24 @@ export class ArchivoService {
       chunkedMode: false,
       httpMethod: "post",
       mimeType: "image/jpeg",
-      headers: {}
+      headers: {},
+      params: {
+        data: data
+      }
+      
     };
-    console.log(GLOBAL.url+"galeria/file");
-    for(let row of file_array){
-      let result = await FileTransfer.upload(row, GLOBAL.url+"galeria/file", options);
-    }
-
+    file_array.forEach((row: any)=>{
+      return FileTransfer.upload(row, "http://192.168.88.93:1337/galeria/file", options)
+      .then((file:any)=>{
+        return file;
+      }, (err)=>{
+        alert("Error");
+      })
+      .catch((error)=>{
+        alert("Error");
+      });
+    });
+    return true;
   }
 
 }

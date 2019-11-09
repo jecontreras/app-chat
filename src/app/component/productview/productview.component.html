@@ -26,6 +26,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="100" pullMax="100">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-grid>
     <ion-row>
       <ion-col size="12">
@@ -33,7 +37,7 @@
         <ion-slides *ngIf="data" pager="true" [options]="slideOptsOne" #slideWithNav
           (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
           <ion-slide *ngFor="let s of sliderOne.slidesItems">
-            <img src="{{s.image}}">
+            <img src="{{s.foto}}">
           </ion-slide>
         </ion-slides>
       </ion-col>
@@ -60,20 +64,27 @@
           {{ "Más de " + data.unidad_vendidas_rango || 0 + "% Vendidos" }}
         </ion-col>
       </ion-row>
-      <!-- <ion-col size="12">
-        <ion-label>Cantidad:</ion-label>
+      <ion-col size="12" *ngIf="data.subasta">
+        <ion-item-divider>
+          <ion-label>Cuantos Ofrece:</ion-label>
+          <ion-input [(ngModel)]="data.precio_ofrece">
+          </ion-input>
+        </ion-item-divider>
+        <!-- <ion-label>Cantidad:</ion-label>
         <ion-select placeholder="Cantidad adquirir" [(ngModel)]="data.cantida_adquiridad">
           <ion-select-option value="1">1</ion-select-option>
           <ion-select-option value="2">2</ion-select-option>
           <ion-select-option value="3">3</ion-select-option>
           <ion-select-option value="4">4</ion-select-option>
           <ion-select-option value="5">5</ion-select-option>
-        </ion-select>
-      </ion-col> -->
+        </ion-select> -->
+      </ion-col>
       <ion-col size="12">
         <div class="ion-text-center">
-          <ion-button color="primary" expand="full" (click)="data_chat()" class="ion-padding ion-text-center">¡Compralo
+          <ion-button *ngIf="!data.subasta" color="primary" expand="full" (click)="data_chat()" class="ion-padding ion-text-center">¡Compralo
             ahora!</ion-button>
+          <ion-button *ngIf="data.subasta" color="primary" expand="full" (click)="ofertalo()" class="ion-padding ion-text-center">
+            ¡Ofertarlo!</ion-button>
           <ion-button color="primary" expand="full" (click)="data_chat()" class="ion-padding ion-text-center">Consultar
             o Cotizar</ion-button>
           <ion-button color="primary" expand="full" (click)="fn_favorito()" class="ion-padding ion-text-center">Marcar
@@ -96,15 +107,15 @@
           </ion-text>
         </ion-item-divider>
         <ion-row>
-          <ion-col *ngFor="let item of data.list_informacion">
-            <ion-row>
+          <ion-col>
+            <ion-row *ngFor="let item of data.list_informacion" class="border_radius">
               <ion-col size="6">
                 <ion-text class="ion-padding-top" color="dark">
-                  <h6>{{ item.key }}</h6>
+                  <h6>{{ item.key + " :" }}</h6>
                 </ion-text>
               </ion-col>
               <ion-col size="6">
-                <ion-text class="ion-padding-top" color="dark">
+                <ion-text color="dark">
                   <h6>{{ item.value }}</h6>
                 </ion-text>
               </ion-col>
@@ -127,11 +138,11 @@
           </ion-text>
         </ion-item-divider>
         <ion-row>
-          <ion-col *ngFor="let item of data.list_envios">
-            <ion-row>
+          <ion-col>
+            <ion-row *ngFor="let item of data.list_envios">
               <ion-col size="6">
                 <ion-text class="ion-padding-top" color="dark">
-                  <h6>{{ item.key }}</h6>
+                  <h6>{{ item.key + " :" }}</h6>
                 </ion-text>
               </ion-col>
               <ion-col size="6">
@@ -240,7 +251,7 @@
         </ion-item-divider>
         <ion-slides pager="false" [options]="slideOptsFoor" #slideWithNav4
           (ionSlideDidChange)="SlideDidChange(sliderFoor,slideWithNav4)">
-          <ion-slide *ngFor="let item of sliderTho.slidesItems">
+          <ion-slide *ngFor="let item of sliderTho.slidesItems" [routerLink]="['/productoview', item.id]">
             <img src="{{item.foto || img}}">
           </ion-slide>
         </ion-slides>
@@ -260,7 +271,7 @@
         </ion-item-divider>
         <ion-slides pager="false" [options]="slideOptsFive" #slideWithNav5
           (ionSlideDidChange)="SlideDidChange(sliderFive,slideWithNav5)">
-          <ion-slide *ngFor="let item of sliderThree.slidesItems">
+          <ion-slide *ngFor="let item of sliderThree.slidesItems" [routerLink]="['/productoview', item.id]">
             <img src="{{item.foto || img}}">
           </ion-slide>
         </ion-slides>

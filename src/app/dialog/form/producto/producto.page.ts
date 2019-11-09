@@ -9,7 +9,7 @@ import { ToastController } from '@ionic/angular';
 import { ProductoService } from 'src/app/service-component/producto.service';
 import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker/ngx';
 import { Router } from '@angular/router';
-import { async } from 'q';
+import * as _ from 'lodash';
 import { CategoriaService } from 'src/app/service-component/categoria.service';
 import { ColorService } from 'src/app/service-component/color.services';
 import { ArchivoService } from 'src/app/service-component/archivo.services';
@@ -82,6 +82,7 @@ export class ProductoPage implements OnInit {
     if(this.evento){
       this.url = this.evento.foto;
       this.data = this.evento;
+      this.get_galeria(this.evento.id);
       this.myForm_product.patchValue(this.evento);
     }
 
@@ -92,23 +93,11 @@ export class ProductoPage implements OnInit {
         slidesItems: [
           {
             id: 1,
-            image: './assets/imagenes/dilisap1.png'
+            foto: './assets/imagenes/dilisap1.png'
           },
           {
             id: 2,
-            image: './assets/imagenes/dilisap1.png'
-          },
-          {
-            id: 3,
-            image: './assets/imagenes/dilisap1.png'
-          },
-          {
-            id: 4,
-            image: './assets/imagenes/dilisap1.png'
-          },
-          {
-            id: 5,
-            image: './assets/imagenes/dilisap1.png'
+            foto: './assets/imagenes/dilisap1.png'
           }
         ]
     };
@@ -155,6 +144,20 @@ export class ProductoPage implements OnInit {
       ],
       list_galeria: Array()
     };
+  }
+  get_galeria(id){
+    return this._archivo.get({
+      where:{
+        articulo: id
+      }
+    })
+    .subscribe((rta:any)=>{
+      rta = rta.data[0];
+      console.log(rta);
+      if(rta){
+        this.sliderOne.slidesItems = rta.archivos;
+      }
+    });
   }
   get_cateogria(){
     return this._categoria.get({
@@ -264,6 +267,7 @@ export class ProductoPage implements OnInit {
   createMyForm(){
     return this.formBuilder.group({
       "titulo": ['', Validators.required],
+      "subasta": [false, Validators.required],
       "categoria": ['', Validators.required],
       "color": ['', Validators.required],
       "marca": ['', Validators.required],
@@ -287,6 +291,7 @@ export class ProductoPage implements OnInit {
     data.list_envios = this.data.list_envios;
     data.list_galeria = this.data.list_galeria;
     this.disable_button = false;
+    data = _.omitBy(data, row=> row == '');
     this._Articulo.saved(data)
     .subscribe((res:any)=>{
       console.log("*********",res);
@@ -294,6 +299,10 @@ export class ProductoPage implements OnInit {
       this._store.dispatch(accion);
       this.myForm_product = this.createMyForm();
       this.disable_button = true;
+      this.data = res;
+    },(error)=>{
+      this.disable_button = true;
+      alert("Error");
     });
   }
 
@@ -332,7 +341,6 @@ export class ProductoPage implements OnInit {
     this.imagePicker.getPictures(this.options).then((results) => {
       for (var i = 0; i < results.length; i++) {
         this.imageResponse.push('data:image/jpeg;base64,' + results[i]);
-        this.sliderOne.slidesItems.push('data:image/jpeg;base64,' + results[i]);
       }
       
       this.uploadImage();
@@ -342,7 +350,9 @@ export class ProductoPage implements OnInit {
     });
   }
   uploadImage(){
-    this._archivo.upload(this.imageResponse);
+    let data = this.myForm_product.value;
+    data.id = this.evento.id;
+    this._archivo.upload(this.imageResponse, data).then(()=>{alert("Error");});
   }
   cerrarModal() {
     this.modalCtrl.dismiss();

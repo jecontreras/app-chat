@@ -24,8 +24,8 @@ export class ChatViewComponent implements OnInit {
   public count:any;
   public id_articulo:any;
   conversation = [
-    { text: 'Hey, that\'s an awesome chat UIssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss', sender: 0, image: './assets/images/sg2.jpg' },
-    { text: 'Right, it totally blew my mind', sender: 1, image: './assets/images/sg1.jpg', read: true, delivered: true, sent: true },
+    { text: 'Hey, that\'s an awesome chat UI', sender: 0, image: './assets/images/sg2.jpg' },
+    { text: 'Right, it totally blew my mind', sender: 1, image: './assets/images/sg1.jpg', read: true, delivered: false, sent: true },
     { text: 'And it is free ?', sender: 0, image: './assets/images/sg2.jpg' },
     { text: 'Yes, totally free', sender: 1, image: './assets/images/sg1.jpg', read: true, delivered: true, sent: true },
     { text: 'Wow, that\'s so cool', sender: 0, image: './assets/images/sg2.jpg' },
@@ -55,6 +55,7 @@ export class ChatViewComponent implements OnInit {
         }
         if(Object.keys(store.mensajes).length >0) {
           // this.list_mensajes = store.mensajes;
+          this.ajuste_key_chat(store.mensajes);
           this.list_mensajes = _.unionBy(this.list_mensajes || [], store.mensajes, 'id');
           // this.list_mensajes = _.orderBy(this.list_mensajes, ['createdAt'], ['asc']);
         }else this.get_chat();
@@ -87,6 +88,24 @@ export class ChatViewComponent implements OnInit {
     this.disable_list = false;
     this.get_chat();
   }
+  ajuste_key_chat(obj:any){
+    for(let row of obj){
+      if(row.emisor.id === this.data_user.id){
+        row.sender = 1;
+        row.read = true;
+        row.delivered = true;
+        row.sent = true;
+        row.foto = row.emisor.foto;
+        row.user = row.emisor.username;
+      }else{
+        row.sender = 0;
+        row.foto = row.emisor.foto;
+        row.user = row.emisor.username;
+      }
+
+    }
+  }
+
   get_chat() {
     return this._chat.get_detallado({
       where: {
@@ -108,6 +127,7 @@ export class ChatViewComponent implements OnInit {
           this._store.dispatch(accion);
         }
       }
+      this.ajuste_key_chat(rta.mensaje);
       this.list_mensajes = rta.mensaje;
       
     });

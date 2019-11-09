@@ -50,15 +50,15 @@
   </ion-list> -->
   <div id="chat-parent" class="bg-image" [ngClass]="{ 'bg-image-X': phone_model=='iPhone X'}">
     <div id="chat-container">
-      <ion-row *ngFor="let conv of conversation; let i = index;" class="full no-padding">
+      <ion-row *ngFor="let conv of list_mensajes; let i = index;" class="full no-padding">
         <ion-col class="no-padding chat-row" [ngClass]="{ 'reverse': conv.sender}">
           <div class="avatar-parent">
             <div class="avatar-border"></div>
-            <img [src]="conv.image" class="avatar">
+            <img [src]="conv.foto" class="avatar">
           </div>
           <div [ngClass]="{ 'name-row-parent-right': conv.sender,'name-row-parent-left': !conv.sender}">
             <div class="no-padding" [ngClass]="{ 'name-row-right': conv.sender,'name-row-left': !conv.sender}">
-              {{conv.sender ? 'Martha': 'Shawn'}} 
+              {{ conv.user }} 
               <div [ngClass]="{ 'timer-right': conv.sender,'timer-left': !conv.sender}">{{i+5}} mins ago
                 <ion-icon *ngIf="conv.sender && conv.sent" name="checkmark" [color]="conv.read ? 'd3green': 'light'"
                   class="first-tick"></ion-icon>
@@ -70,7 +70,7 @@
               </div>
             </div>
             <div class="no-padding" [ngClass]="{ 'message-row-right': conv.sender,'message-row-left': !conv.sender}">
-              <ion-text class="text ion-no-margin">{{conv.text}}</ion-text>
+              <ion-text class="text ion-no-margin">{{conv.mensaje}}</ion-text>
             </div>
           </div>
 
@@ -84,11 +84,13 @@
     <form [formGroup]="myForm_chat" (ngSubmit)="submit_mensaje()">
       <ion-grid>
         <ion-row>
-          <ion-col size="8">
+          <ion-col size="10">
             <ion-input formControlName="mensaje" placeholder="Escriba un mensaje"></ion-input>
           </ion-col>
-          <ion-col size="4">
-            <ion-button color="primary" type="submit">Enviar</ion-button>
+          <ion-col size="2">
+            <ion-button color="success" type="submit">
+                <ion-icon name="arrow-dropright-circle"></ion-icon>
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>

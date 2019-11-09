@@ -33,7 +33,7 @@
         <ion-row>
           <ion-col size="6" *ngFor="let off of list_product" (click)="open_form(off)">
             <ion-card>
-              <ion-img [src]=" off.foto "></ion-img>
+              <img [src]=" off.foto">
               <ion-card-header>
                 <ion-card-subtitle>{{ off.titulo }}</ion-card-subtitle>
               </ion-card-header>

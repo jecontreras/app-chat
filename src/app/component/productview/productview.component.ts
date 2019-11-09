@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { CartAction, SearchAction } from 'src/app/redux/app.actions';
 import { ToastController } from '@ionic/angular';
 import { ProductoService } from 'src/app/service-component/producto.service';
+import { ArchivoService } from 'src/app/service-component/archivo.services';
 
 @Component({
   selector: 'app-productview',
@@ -19,6 +20,8 @@ export class ProductviewComponent implements OnInit {
     user:{}
   };
   public list_productos: any = [];
+  public ev:any = {};
+  public disable_list:boolean = true;
 
   @ViewChildren('slideWithNav') slideWithNav: IonSlides;
   @ViewChildren('slideWithNav2') slideWithNav2: IonSlides;
@@ -72,11 +75,12 @@ export class ProductviewComponent implements OnInit {
     private route: ActivatedRoute,
     private _store: Store<ARTICULOS>,
     public toastController: ToastController,
-    private _producto: ProductoService
+    private _producto: ProductoService,
+    private _archivo: ArchivoService,
   ) {
     this._store.select("name")
       .subscribe((store: any) => {
-        console.log(store);
+        // console.log(store);
         this.list_productos = store.articulos;
       });
     this.init();
@@ -90,34 +94,24 @@ export class ProductviewComponent implements OnInit {
         slidesItems: [
           {
             id: 1,
-            image: './assets/imagenes/dilisap1.png'
+            foto: './assets/imagenes/dilisap1.png'
           },
-          {
-            id: 2,
-            image: './assets/imagenes/dilisap1.png'
-          },
-          {
-            id: 3,
-            image: './assets/imagenes/dilisap1.png'
-          },
-          {
-            id: 4,
-            image: './assets/imagenes/dilisap1.png'
-          },
-          {
-            id: 5,
-            image: './assets/imagenes/dilisap1.png'
-          }
         ]
       };
+  }
+  doRefresh(ev){
+    this.ev = ev;
+    this.disable_list = false;
+    this.init();
   }
   init(){
     this.route.params.subscribe(params => {
       if (params['id'] != null) {
         return this.get_articulo(params.id)
         .subscribe((rta:any)=>{
-          console.log(rta);
+          // console.log(rta);
           this.data = rta.data[0];
+          this.data.precio_ofrece = this.data.costoventa;
           if(!this.data) return false;
           this.data.cantida_adquiridad = String(1);
           if (this.data.list_informacion.length === 0 ) this.data.informacion_articulo = [];
@@ -126,6 +120,13 @@ export class ProductviewComponent implements OnInit {
           // if (this.data.list_comentario_vendedor.length === 0) this.data.list_comentario_vendedor = [{ username: "pos_r", titulo: "Excelente", comentario: "genial vendedor" }];
           if (Object.keys(this.data.user).length === 0) this.data.user = {};
           this.data_referecencia_articulo();
+          this.get_galeria(this.data.id);
+          if(this.ev){
+            this.disable_list = true;
+            if(this.ev.target){
+              this.ev.target.complete();
+            }
+          }
         });
       }
     });
@@ -138,7 +139,20 @@ export class ProductviewComponent implements OnInit {
       limit: 1
     });
   }
-
+  get_galeria(id){
+    return this._archivo.get({
+      where:{
+        articulo: id
+      }
+    })
+    .subscribe((rta:any)=>{
+      rta = rta.data[0];
+      // console.log(rta);
+      if(rta){
+        this.sliderOne.slidesItems = rta.archivos;
+      }
+    });
+  }
   submit_cart(opt: any) {
     let data = this.data;
     if (!data.cantida_adquiridad) return this.presentToast('Erro por favor agregar una cantidad');;
@@ -177,10 +191,14 @@ export class ProductviewComponent implements OnInit {
       costopromosion: this.data.costopromosion,
       costoventa: this.data.costoventa
     };
-    console.log(this.data)
+    // console.log(this.data)
     let action = new SearchAction(data, 'post')
     this._store.dispatch(action);
     this.router.navigate(['/chat_view', this.data.user.id]);
+  }
+
+  async ofertalo(){
+    
   }
 
 
