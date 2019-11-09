@@ -50,26 +50,34 @@
         <ion-text class="ion-padding-top" color="dark">
           <ion-label position="floating">Aprox.</ion-label>
           {{ data.costoventa | currency:'COP':true }}
-          <span>{{ data.envio || 'Envio Gratis'}}</span>
-          <p>{{ data.usb || '0' | currency:'USB':true }}</p>
+          <!-- <span>{{ data.envio || 'Envio Gratis'}}</span> -->
+          <!-- <p>{{ data.usb || '0' | currency:'USB':true }}</p> -->
           <br>
           <!-- <span>{{ }}</span> -->
         </ion-text>
       </ion-col>
-      <ion-row>
+      <!-- <ion-row>
         <ion-col size="6">
           {{ data.unidad_vendidas || 0 + " Vendidos" }}
         </ion-col>
         <ion-col size="6">
           {{ "Más de " + data.unidad_vendidas_rango || 0 + "% Vendidos" }}
         </ion-col>
-      </ion-row>
+      </ion-row> -->
       <ion-col size="12" *ngIf="data.subasta">
         <ion-item-divider>
-          <ion-label>Cuantos Ofrece:</ion-label>
-          <ion-input [(ngModel)]="data.precio_ofrece">
-          </ion-input>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Cuantos Ofrece:</ion-label>
+              <ion-input type="number" [(ngModel)]="data.precio_ofrece"></ion-input>
+            </ion-item>
+          </ion-list>
         </ion-item-divider>
+        <ion-text color="warning" *ngIf="data.disableoferta">
+          <h6>
+            Ya Ofertastes a este Producto
+          </h6>
+        </ion-text>
         <!-- <ion-label>Cantidad:</ion-label>
         <ion-select placeholder="Cantidad adquirir" [(ngModel)]="data.cantida_adquiridad">
           <ion-select-option value="1">1</ion-select-option>
@@ -81,14 +89,16 @@
       </ion-col>
       <ion-col size="12">
         <div class="ion-text-center">
-          <ion-button *ngIf="!data.subasta" color="primary" expand="full" (click)="data_chat()" class="ion-padding ion-text-center">¡Compralo
+          <ion-button *ngIf="!data.subasta" color="primary" expand="full" (click)="data_chat()"
+            class="ion-padding ion-text-center">¡Compralo
             ahora!</ion-button>
-          <ion-button *ngIf="data.subasta" color="primary" expand="full" (click)="ofertalo()" class="ion-padding ion-text-center">
+          <ion-button *ngIf="data.subasta" color="primary" expand="full" (click)="ofertalo()"
+            class="ion-padding ion-text-center">
             ¡Ofertarlo!</ion-button>
           <ion-button color="primary" expand="full" (click)="data_chat()" class="ion-padding ion-text-center">Consultar
             o Cotizar</ion-button>
-          <ion-button color="primary" expand="full" (click)="fn_favorito()" class="ion-padding ion-text-center">Marcar
-            como favorito</ion-button>
+          <!-- <ion-button color="primary" expand="full" (click)="fn_favorito()" class="ion-padding ion-text-center">Marcar
+            como favorito</ion-button> -->
         </div>
       </ion-col>
       <!-- <ion-col size="12">
@@ -101,6 +111,9 @@
         </div>
       </ion-col>
       <ion-col size="12">
+        <ion-toolbar color="primary">
+          <ion-title>Subheader</ion-title>
+        </ion-toolbar>
         <ion-item-divider>
           <ion-text class="ion-padding-top" color="dark">
             <h5>Sobre este artículo</h5>
@@ -116,7 +129,7 @@
               </ion-col>
               <ion-col size="6">
                 <ion-text color="dark">
-                  <h6>{{ item.value }}</h6>
+                  <h6>{{ item.value || 'sin descripcion' }}</h6>
                 </ion-text>
               </ion-col>
             </ion-row>

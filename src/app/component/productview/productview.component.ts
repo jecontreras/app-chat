@@ -8,6 +8,7 @@ import { CartAction, SearchAction } from 'src/app/redux/app.actions';
 import { ToastController } from '@ionic/angular';
 import { ProductoService } from 'src/app/service-component/producto.service';
 import { ArchivoService } from 'src/app/service-component/archivo.services';
+import { SubastasService } from 'src/app/service-component/subastas.service';
 
 @Component({
   selector: 'app-productview',
@@ -22,6 +23,7 @@ export class ProductviewComponent implements OnInit {
   public list_productos: any = [];
   public ev:any = {};
   public disable_list:boolean = true;
+  public data_user:any = {};
 
   @ViewChildren('slideWithNav') slideWithNav: IonSlides;
   @ViewChildren('slideWithNav2') slideWithNav2: IonSlides;
@@ -77,10 +79,12 @@ export class ProductviewComponent implements OnInit {
     public toastController: ToastController,
     private _producto: ProductoService,
     private _archivo: ArchivoService,
+    private _subasta: SubastasService
   ) {
     this._store.select("name")
       .subscribe((store: any) => {
         // console.log(store);
+        this.data_user = store.user;
         this.list_productos = store.articulos;
       });
     this.init();
@@ -121,6 +125,7 @@ export class ProductviewComponent implements OnInit {
           if (Object.keys(this.data.user).length === 0) this.data.user = {};
           this.data_referecencia_articulo();
           this.get_galeria(this.data.id);
+          this.get_ofertarlo();
           if(this.ev){
             this.disable_list = true;
             if(this.ev.target){
@@ -196,12 +201,37 @@ export class ProductviewComponent implements OnInit {
     this._store.dispatch(action);
     this.router.navigate(['/chat_view', this.data.user.id]);
   }
-
-  async ofertalo(){
-    
+  async get_ofertarlo(){
+    return this._subasta.get({
+      where:{
+        user: this.data_user.id,
+        articulo: this.data.id
+      },
+      limit: 1
+    }).subscribe((res:any)=>{
+      res = res.data[0];
+      if(res) this.data.disableoferta = true;
+    });
   }
-
-
+  async ofertalo(){
+    let data:any = {
+      articulo: this.data.id,
+      user: this.data_user.id,
+      ofrece: this.data.precio_ofrece
+    };
+    if(!data.ofrece) this.presentToast('Por Favor Agregar un valor!');
+    return this._subasta.saved(data).subscribe((rta:any)=>{
+      console.log(rta);
+      if(rta.id){
+        this.presentToast('Ofertado exitosamente!');
+        this.data.disableoferta = true;
+      }else{
+        this.presentToast('ALgo salio mal!');
+      }
+    }, (err)=>{
+      this.presentToast('ALgo salio mal!');
+    });
+  }
 
   // TODO FUNCIONES DEL SLIDER
   //Move to Next slide
