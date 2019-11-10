@@ -9,6 +9,7 @@ import { ToastController } from '@ionic/angular';
 import { ProductoService } from 'src/app/service-component/producto.service';
 import { ArchivoService } from 'src/app/service-component/archivo.services';
 import { SubastasService } from 'src/app/service-component/subastas.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-productview',
@@ -24,6 +25,7 @@ export class ProductviewComponent implements OnInit {
   public ev:any = {};
   public disable_list:boolean = true;
   public data_user:any = {};
+  public disable_data:boolean = true;
 
   @ViewChildren('slideWithNav') slideWithNav: IonSlides;
   @ViewChildren('slideWithNav2') slideWithNav2: IonSlides;
@@ -79,7 +81,8 @@ export class ProductviewComponent implements OnInit {
     public toastController: ToastController,
     private _producto: ProductoService,
     private _archivo: ArchivoService,
-    private _subasta: SubastasService
+    private _subasta: SubastasService,
+    public alertController: AlertController
   ) {
     this._store.select("name")
       .subscribe((store: any) => {
@@ -113,7 +116,8 @@ export class ProductviewComponent implements OnInit {
       if (params['id'] != null) {
         return this.get_articulo(params.id)
         .subscribe((rta:any)=>{
-          // console.log(rta);
+          console.log(rta);
+          if(!rta.data[0]) return this.ocultar_disable()
           this.data = rta.data[0];
           this.data.precio_ofrece = this.data.costoventa;
           if(!this.data) return false;
@@ -144,10 +148,21 @@ export class ProductviewComponent implements OnInit {
       limit: 1
     });
   }
+  async ocultar_disable(){
+    this.disable_data = false;
+    const alert = await this.alertController.create({
+      header: 'Lo sentimos',
+      message: 'Producto no encontrado',
+      buttons: ['Ok']
+    });
+    this.router.navigate(['/home']);
+    await alert.present();
+  }
   get_galeria(id){
     return this._archivo.get({
       where:{
-        articulo: id
+        articulo: id,
+        opcion: 'activo'
       }
     })
     .subscribe((rta:any)=>{
@@ -216,12 +231,13 @@ export class ProductviewComponent implements OnInit {
   async ofertalo(){
     let data:any = {
       articulo: this.data.id,
-      user: this.data_user.id,
+      user: this.data.user.id,
+      creado: this.data_user.id,
       ofrece: this.data.precio_ofrece
     };
     if(!data.ofrece) this.presentToast('Por Favor Agregar un valor!');
     return this._subasta.saved(data).subscribe((rta:any)=>{
-      console.log(rta);
+      // console.log(rta);
       if(rta.id){
         this.presentToast('Ofertado exitosamente!');
         this.data.disableoferta = true;

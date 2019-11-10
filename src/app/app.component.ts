@@ -47,7 +47,7 @@ export class AppComponent {
     },
     {
       title: 'Negocios',
-      url: '/chat',
+      url: '/negocios',
       icon: 'contacts'
     }
   ];

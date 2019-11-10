@@ -12,6 +12,8 @@ export let USER             = '[App] User';
 export let SEARCH           = '[App] Search';
 export let EVENTOS          = '[App] Eventos';
 export let CATEGORIA        = '[App] Categoria';
+export let SUBASTA          = '[App] Subasta';
+export let NEGOCIOS         = '[App] Negocios';
 
 export class NameappAction implements Action {
     readonly type = NAMEAPP;
@@ -63,6 +65,16 @@ export class CategoriaAction implements Action {
     constructor( public payload: any,  public opt: string){}
 }
 
+export class SubastaAction implements Action {
+    readonly type = SUBASTA;
+    constructor( public payload: any,  public opt: string){}
+}
+
+export class NegociosAction implements Action {
+    readonly type = NEGOCIOS;
+    constructor( public payload: any,  public opt: string){}
+}
+
 export type actions = NameappAction         |
                       ArticulosAction       |
                       MensajesAction        |
@@ -73,4 +85,6 @@ export type actions = NameappAction         |
                       SearchAction          |
                       MensajesInitAction    |
                       EventosAction         |
-                      CategoriaAction       ;
+                      CategoriaAction       |
+                      SubastaAction         |
+                      NegociosAction        ;

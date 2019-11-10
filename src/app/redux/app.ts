@@ -16,7 +16,9 @@ let APP = {
     user: Object(),
     search: Object(),
     eventos: Array(),
-    categoria: Array()
+    categoria: Array(),
+    subasta: Array(),
+    negocios: Array()
 };
 export function appReducer(state: any = APP, action: _action.actions) {
   if(JSON.parse(localStorage.getItem('APP'))) state = JSON.parse(localStorage.getItem('APP'));
@@ -327,6 +329,68 @@ export function appReducer(state: any = APP, action: _action.actions) {
           let idx = _.findIndex(state.categoria, ['id', action.payload['id']]);
           if(idx >-1){
             state.categoria.splice(idx, 1);
+            
+          }
+          return local_Storage(state);
+        }
+        break;
+        default:
+        return local_Storage(state);
+        break;
+      }
+    }
+    break;
+    case _action.SUBASTA:{
+      switch (action.opt){
+        case 'post': {
+          state.subasta.push(action.payload);
+          return local_Storage(state);
+        }
+        break;
+        case 'put': {
+          let idx = _.findIndex(state.subasta, ['id', action.payload['id']]);
+          if(idx >-1){
+            state.subasta[idx]= action.payload;
+            
+          }
+          return local_Storage(state);
+        }
+        break;
+        case 'delete': {
+          let idx = _.findIndex(state.subasta, ['id', action.payload['id']]);
+          if(idx >-1){
+            state.subasta.splice(idx, 1);
+            
+          }
+          return local_Storage(state);
+        }
+        break;
+        default:
+        return local_Storage(state);
+        break;
+      }
+    }
+    break;
+    case _action.NEGOCIOS:{
+      switch (action.opt){
+        case 'post': {
+          state.negocios.push(action.payload);
+          return local_Storage(state);
+        }
+        break;
+        case 'put': {
+          let idx = _.findIndex(state.negocios, ['id', action.payload['id']]);
+          if(idx >-1){
+            state.negocios[idx]= action.payload;
+            
+          }
+          return local_Storage(state);
+        }
+        break;
+        case 'delete': {
+          let idx = _.findIndex(state.negocios, ['id', action.payload['id']]);
+          if(idx >-1){
+            state.negocios.splice(idx, 1);
             
           }
           return local_Storage(state);

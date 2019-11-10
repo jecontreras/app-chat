@@ -34,6 +34,7 @@ import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { FactoryModelService } from './services/factory.model.service';
 import { PerfilComponent } from './component/perfil/perfil.component';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { NegociosComponent } from './component/negocios/negocios.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
     RegistroComponent,
     ListproductComponent,
     PerfilComponent,
-    ChatComponent
+    ChatComponent,
+    NegociosComponent
   ],
   entryComponents: [
   ],

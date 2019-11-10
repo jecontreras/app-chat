@@ -46,6 +46,14 @@
                 <ion-input formControlName="codigo" type="text" placeholder="Codigo del Producto">
                 </ion-input>
             </ion-item>
+            <ion-item *ngIf="data.id">
+                <ion-label>Disponibilidad del producto</ion-label>
+                <ion-select formControlName="opcion">
+                    <ion-select-option *ngFor="let item of list_opciones" [value]="item.id">
+                        {{ item.tipo }}
+                    </ion-select-option>
+                </ion-select>
+            </ion-item>
             <ion-item>
                 <!-- <ion-icon name="filing" item-start></ion-icon> -->
                 <ion-label position="floating">Nombre</ion-label>

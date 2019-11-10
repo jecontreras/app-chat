@@ -12,6 +12,7 @@ import { RegistroComponent } from './logeo/registro/registro.component';
 import { LoginComponent } from './logeo/login/login.component';
 import { ListproductComponent } from './component/listproduct/listproduct.component';
 import { PerfilComponent } from './component/perfil/perfil.component';
+import { NegociosComponent } from './component/negocios/negocios.component';
 
 const routes: Routes = [
   {
@@ -84,6 +85,10 @@ const routes: Routes = [
   {
     path: 'subastas',
     component: SubastasComponent
+  },
+  {
+    path: 'negocios',
+    component: NegociosComponent
   },
   {
     path: 'perfil',

@@ -46,6 +46,16 @@ export class ProductoPage implements OnInit {
   public list_marca:any=[];
   public list_color:any=[];
   public imageResponse:any = [];
+  public list_opciones:any=[
+    {
+      id: 'activo',
+      tipo: 'Disponible'
+    },
+    {
+      id: 'inactivo',
+      tipo: 'Inactivo'
+    }
+  ];
 
   constructor(
     private modalCtrl: ModalController,
@@ -153,7 +163,7 @@ export class ProductoPage implements OnInit {
     })
     .subscribe((rta:any)=>{
       rta = rta.data[0];
-      console.log(rta);
+      // console.log(rta);
       if(rta){
         this.sliderOne.slidesItems = rta.archivos;
       }
@@ -268,6 +278,7 @@ export class ProductoPage implements OnInit {
     return this.formBuilder.group({
       "titulo": ['', Validators.required],
       "subasta": [false, Validators.required],
+      "opcion": ['activo', Validators.required],
       "categoria": ['', Validators.required],
       "color": ['', Validators.required],
       "marca": ['', Validators.required],
