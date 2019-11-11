@@ -35,6 +35,7 @@ import { FactoryModelService } from './services/factory.model.service';
 import { PerfilComponent } from './component/perfil/perfil.component';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { NegociosComponent } from './component/negocios/negocios.component';
+import { NegociosPageModule } from './dialog/form/negocios/negocios.module';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { NegociosComponent } from './component/negocios/negocios.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ProductoPageModule
+    ProductoPageModule,
+    NegociosPageModule
   ],
   providers: [
     StatusBar,

@@ -4,6 +4,9 @@ import { ProductoService } from 'src/app/service-component/producto.service';
 import { ARTICULOS } from 'src/app/redux/interfax/articulos';
 import { Router } from '@angular/router';
 import { NegociosAction } from 'src/app/redux/app.actions';
+import { ModalController } from '@ionic/angular';
+import { NegociosPage } from 'src/app/dialog/form/negocios/negocios.page';
+import { NegociosService } from 'src/app/service-component/negocios.services';
 
 @Component({
   selector: 'app-negocios',
@@ -19,7 +22,9 @@ export class NegociosComponent implements OnInit {
 
   constructor(
     private _producto: ProductoService,
+    private _negocios: NegociosService,
     private _store: Store<ARTICULOS>,
+    private modalCtrl: ModalController,
     private router: Router,
   ) {
     this._store.select("name")
@@ -38,9 +43,9 @@ export class NegociosComponent implements OnInit {
   ngOnInit() {
   }
   get_articulo(){
-    return this._producto.get({
+    return this._negocios.get({
       where:{
-        opcion: 'activo'
+        estado: 'activo'
       }
     })
     .subscribe((rta:any)=>{
@@ -61,6 +66,14 @@ export class NegociosComponent implements OnInit {
       }
       this.list_negocios = rta;
     });
+  }
+  open_form(obj) {
+    this.modalCtrl.create({
+      component: NegociosPage,
+      componentProps: {
+        obj: obj
+      }
+    }).then(modal=>modal.present());
   }
 
 }
