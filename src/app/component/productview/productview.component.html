@@ -261,7 +261,7 @@
         <ion-slides pager="false" [options]="slideOptsFoor" #slideWithNav4
           (ionSlideDidChange)="SlideDidChange(sliderFoor,slideWithNav4)">
           <ion-slide *ngFor="let item of sliderTho.slidesItems" [routerLink]="['/productoview', item.id]">
-            <img src="{{item.foto || img}}">
+            <img class="padding_img" src="{{item.foto || img}}">
           </ion-slide>
         </ion-slides>
       </ion-col>
@@ -281,7 +281,7 @@
         <ion-slides pager="false" [options]="slideOptsFive" #slideWithNav5
           (ionSlideDidChange)="SlideDidChange(sliderFive,slideWithNav5)">
           <ion-slide *ngFor="let item of sliderThree.slidesItems" [routerLink]="['/productoview', item.id]">
-            <img src="{{item.foto || img}}">
+            <img class="padding_img" src="{{item.foto || img}}">
           </ion-slide>
         </ion-slides>
       </ion-col>

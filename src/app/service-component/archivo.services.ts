@@ -43,16 +43,15 @@ export class ArchivoService {
       }
       
     };
+    console.log("la porrta", file_array)
     file_array.forEach((row: any)=>{
       return FileTransfer.upload(row, "http://192.168.88.93:1337/galeria/file", options)
       .then((file:any)=>{
+        console.log("el men",file);
         return file;
       }, (err)=>{
         alert("Error");
       })
-      .catch((error)=>{
-        alert("Error");
-      });
     });
     return true;
   }

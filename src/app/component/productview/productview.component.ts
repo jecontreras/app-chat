@@ -162,7 +162,7 @@ export class ProductviewComponent implements OnInit {
     return this._archivo.get({
       where:{
         articulo: id,
-        opcion: 'activo'
+        // opcion: 'activo'
       }
     })
     .subscribe((rta:any)=>{

@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "chatAppUI",
+  "appName": "tuplotter",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

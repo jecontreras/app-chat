@@ -67,6 +67,11 @@ export class NegociosComponent implements OnInit {
       this.list_negocios = rta;
     });
   }
+  doRefresh(ev){
+    this.ev = ev;
+    this.disable_list = false;
+    this.get_articulo();
+  }
   open_form(obj) {
     this.modalCtrl.create({
       component: NegociosPage,

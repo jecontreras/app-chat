@@ -175,7 +175,10 @@ export class NegociosPage implements OnInit {
     let data = this.myForm_negocios.value;
     data.id = this.evento.id;
     data.opt_archivo = 'negocios';
-    this._archivo.upload(this.imageResponse, data).then(()=>{alert("Error");});
+    this._archivo.upload(this.imageResponse, data).then(()=>{
+      alert("Exitoso");
+      this.get_galeria(data.id);
+    });
   }
 
   cerrarModal() {

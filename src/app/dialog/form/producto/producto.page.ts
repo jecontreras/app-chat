@@ -364,7 +364,10 @@ export class ProductoPage implements OnInit {
     let data = this.myForm_product.value;
     data.id = this.evento.id;
     data.opt_archivo = 'articulo';
-    this._archivo.upload(this.imageResponse, data).then(()=>{alert("Error");});
+    this._archivo.upload(this.imageResponse, data).then(()=>{
+      alert("Exitoso");
+      this.get_galeria(data.id);
+    });
   }
   cerrarModal() {
     this.modalCtrl.dismiss();
