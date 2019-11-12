@@ -343,8 +343,9 @@ export class ProductoPage implements OnInit {
   getImages() {
     this.options = {
       maximumImagesCount: 6,
-      width: 200,
-      quality: 25,
+      width: 128,
+      height: 215,
+      quality: 50,
       outputType: 1
     };
     this.imageResponse = [];

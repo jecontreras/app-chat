@@ -21,7 +21,10 @@ let APP = {
     negocios: Array()
 };
 export function appReducer(state: any = APP, action: _action.actions) {
-  if(JSON.parse(localStorage.getItem('APP'))) state = JSON.parse(localStorage.getItem('APP'));
+  if(JSON.parse(localStorage.getItem('APP'))) {
+    state = JSON.parse(localStorage.getItem('APP'));
+    validacion_key(state);
+  }
   else {
     localStorage.removeItem('APP');
     localStorage.setItem('APP', JSON.stringify(state));
@@ -33,6 +36,33 @@ export function appReducer(state: any = APP, action: _action.actions) {
     state = JSON.parse(localStorage.getItem('APP'));
     return state
   }
+  function proceso_data(lista:any, data:any, opt){
+    let idx = _.findIndex(lista, ['id', data.id]);
+    if(idx >-1){
+      if(opt === 'delete') lista.splice(idx, 1);
+      else lista[idx]= data;
+    }else{
+      if(opt === 'post') lista.push(data);
+    }
+    return lista;
+  }
+  function validacion_key(state){
+    if(!state.articulos) state.articulos = [];
+    if(!state.cart) state.cart = [];
+    if(!state.categoria) state.categoria = [];
+    if(!state.comentarios) state.comentarios = [];
+    if(!state.compras) state.compras = [];
+    if(!state.eventos) state.eventos = [];
+    if(!state.favorito) state.favorito = {};
+    if(!state.mensajes) state.mensajes = [];
+    if(!state.mensajes_init) state.mensajes_init = [];
+    if(!state.nameapp) state.nameapp = {};
+    if(!state.notificaciones) state.notificaciones = [];
+    if(!state.search) state.search = {};
+    if(!state.subasta) state.subasta = [];
+    if(!state.user) state.user = {};
+    if(!state.negocios) state.negocios = [];
+  }
   switch (action.type) {
     case _action.NAMEAPP:{
       state.nameapp = action.payload;
@@ -43,6 +73,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
       switch (action.opt){
         case 'post': {
           // console.log(action.payload);
+          if(!state.articulos) state.articulos = [];
           state.articulos.push(action.payload);
           return local_Storage(state);
         }
@@ -72,6 +103,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
     case _action.MENSAJES:{
       switch (action.opt){
         case 'post': {
+          if(!state.mensajes) state.mensajes = [];
           state.mensajes.push(action.payload);
           return local_Storage(state);
         }
@@ -103,6 +135,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
     case _action.MENSAJESINIT:{
       switch (action.opt){
         case 'post': {
+          if(!state.mensajes_init) state.mensajes_init = [];
           state.mensajes_init.push(action.payload);
           return local_Storage(state);
         }
@@ -134,6 +167,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
     case _action.NOTIFICACIONES:{
       switch (action.opt){
         case 'post': {
+          if(!state.notificaciones) state.notificaciones = [];
           state.notificaciones.push(action.payload);
           
           return local_Storage(state);
@@ -166,6 +200,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
     case _action.COMENTARIOS: {
       switch (action.opt){
         case 'post': {
+          if(!state.comentarios) state.comentarios = [];
           state.comentarios.push(action.payload);
           
           return local_Storage(state);
@@ -198,6 +233,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
     case _action.COMPRAS:{
       switch (action.opt){
         case 'post': {
+          if(!state.compras) state.compras = [];
           state.compras.push(action.payload);
           
           return local_Storage(state);
@@ -281,6 +317,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
     case _action.EVENTOS:{
       switch (action.opt){
         case 'post': {
+          if(!state.eventos) state.eventos = [];
           state.eventos.push(action.payload);
           return local_Storage(state);
         }
@@ -312,6 +349,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
     case _action.CATEGORIA:{
       switch (action.opt){
         case 'post': {
+          if(!state.categoria) state.categoria = [];
           state.categoria.push(action.payload);
           return local_Storage(state);
         }
@@ -343,6 +381,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
     case _action.SUBASTA:{
       switch (action.opt){
         case 'post': {
+          if(!state.subasta) state.subasta = [];
           state.subasta.push(action.payload);
           return local_Storage(state);
         }
@@ -374,25 +413,21 @@ export function appReducer(state: any = APP, action: _action.actions) {
     case _action.NEGOCIOS:{
       switch (action.opt){
         case 'post': {
-          state.negocios.push(action.payload);
+          if(!state.negocios) state.negocios = [];
+          let data = proceso_data(state.negocios,action.payload, 'post');
+          state.negocios = data;
           return local_Storage(state);
         }
         break;
         case 'put': {
-          let idx = _.findIndex(state.negocios, ['id', action.payload['id']]);
-          if(idx >-1){
-            state.negocios[idx]= action.payload;
-            
-          }
+          let data = proceso_data(state.negocios,action.payload, 'put');
+          state.negocios = data;
           return local_Storage(state);
         }
         break;
         case 'delete': {
-          let idx = _.findIndex(state.negocios, ['id', action.payload['id']]);
-          if(idx >-1){
-            state.negocios.splice(idx, 1);
-            
-          }
+          let data = proceso_data(state.negocios,action.payload, 'delete');
+          state.negocios = data;
           return local_Storage(state);
         }
         break;

@@ -108,7 +108,7 @@ export class NegociosPage implements OnInit {
     })
     .subscribe((rta:any)=>{
       rta = rta.data[0];
-      // console.log(rta);
+      console.log(rta);
       if(rta){
         this.sliderOne.slidesItems = rta.archivos;
       }
@@ -154,8 +154,9 @@ export class NegociosPage implements OnInit {
   getImages() {
     this.options = {
       maximumImagesCount: 6,
-      width: 200,
-      quality: 25,
+      width: 128,
+      height: 215,
+      quality: 50,
       outputType: 1
     };
     this.imageResponse = [];
@@ -164,9 +165,7 @@ export class NegociosPage implements OnInit {
       for (var i = 0; i < results.length; i++) {
         this.imageResponse.push('data:image/jpeg;base64,' + results[i]);
       }
-      
-      this.uploadImage();
-
+      if(Object.keys(this.imageResponse).length  > 0) this.uploadImage();
     }, (err) => {
       alert(err);
     });

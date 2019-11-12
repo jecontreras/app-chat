@@ -24,9 +24,9 @@
 <ion-content>
   <ion-toolbar>
     <ion-grid>
-      <ion-row>
+      <ion-row class="border">
         <ion-col size="2">
-          <img [src]="data_user.foto">
+          <img [src]="data_user.foto" class="img_perfil padding_img">
         </ion-col>
         <ion-col size="8">
           <ion-searchbar animated placeholder="Buscar" [(ngModel)]="searchtxt" (input)="search()"></ion-searchbar>
@@ -42,8 +42,8 @@
     </ion-refresher-content>
   </ion-refresher>
   <ion-grid>
-    <ion-row *ngFor="let item of list_negocios" (click)="open_form(item)">
-      <ion-col size="12">
+    <ion-row class="border" *ngFor="let item of list_negocios" (click)="open_form(item)">
+      <ion-col size="12" class="border">
         <ion-grid>
           <ion-row>
             <ion-col size="10">
@@ -71,14 +71,9 @@
           <h3><img [src]="item.foto" /></h3>
         </div>
       </ion-col>
-      <ion-col size="3">
+      <ion-col size="12">
         <ion-text color="dark">
-          <h6>{{ item.megusta + " Me gusta" }}</h6>
-        </ion-text>
-      </ion-col>
-      <ion-col size="9">
-        <ion-text color="dark">
-          <h6>{{ item.coun_comentario + " comentarios" }}</h6>
+          <h6>{{ item.megusta + " Me gusta" }} <span class="titulo">{{ item.coun_comentario + " comentarios" }}</span></h6>
         </ion-text>
       </ion-col>
       <ion-col size="4">

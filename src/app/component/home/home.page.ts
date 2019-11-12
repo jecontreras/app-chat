@@ -120,6 +120,7 @@ export class HomePage {
     })
     .subscribe((rta:any)=>{
       rta = rta.data;
+      console.log(rta);
       if(Object.keys(rta).length > 0) this.ajuste_categoria(rta);
       else this.ajuste_categoria();
     });
@@ -128,21 +129,21 @@ export class HomePage {
     this.sliderOne.slidesItems = obj ? obj :[
         {
           id: 1,
-          titulo: 'Plotters'
+          categoria: 'Plotters'
         },
         {
           id: 2,
-          titulo: 'Calandras'
+          categoria: 'Calandras'
         },
         {
           id: 3,
-          titulo: 'Planchas'
+          categoria: 'Planchas'
         },
       ];
   }
   search(event:any){
-    console.log(event);
-    let action = new SearchAction(this.search, '')
+    // console.log(event);
+    let action = new SearchAction({txt: this.searchtxt}, 'post')
     this._store.dispatch(action);
     this.router.navigate(['/listproduct', 'buscador']);
   }

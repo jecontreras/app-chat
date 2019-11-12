@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "tuplotter",
+  "appName": "Tuplotter",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
