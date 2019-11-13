@@ -9,13 +9,11 @@
         </ion-col>
         <ion-col size="8">
           <ion-title class="ion-padding-top">
-            Ecomerce
+              <img class="logo" [src]="'./assets/imagenes/Logo.png'">
           </ion-title>
         </ion-col>
         <ion-col size="2">
-          <ion-button color="success" [routerLink]="['/notificacion']">
-            <ion-icon name="notifications-outline"></ion-icon>
-          </ion-button>
+          <ion-icon class="logo_notificacion" size="large" name="notifications-outline" [routerLink]="['/notificacion']"></ion-icon>
         </ion-col>
         <ion-col size="12">
           <ion-searchbar placeholder="Buscar Ecomerce" animated [(ngModel)]="searchtxt"
@@ -37,7 +35,7 @@
     <ion-slide *ngFor="let s of sliderOne.slidesItems">
       <ion-segment>
         <ion-segment-button checked [routerLink]="['/listproduct', 123]">
-          <ion-label>{{ s.titulo }}</ion-label>
+          <ion-label>{{ s.categoria }}</ion-label>
         </ion-segment-button>
       </ion-segment>
     </ion-slide>
@@ -64,7 +62,7 @@
           (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
           <ion-slide *ngFor="let off of item.articulos" [routerLink]="['/productoview', off.articulo.id]">
             <ion-row class="ion-padding">
-              <img [src]=" off.articulo.foto">
+              <img [src]=" off.articulo.foto" class="img_dimenciones">
               <!-- <ion-img [src]="img"></ion-img> -->
               <ion-col size="12">
                 <ion-text color="dark">

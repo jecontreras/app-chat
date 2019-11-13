@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear Nota</ion-title>
+    <ion-button slot="end" (click)="cerrarModal()" color="danger">
+      <ion-icon name="close-circle-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="false" (click)="submit()" slot="end" color="success">
+      <ion-icon name="save"></ion-icon>
+    </ion-button>
+    <ion-button  *ngIf="false" (click)="editar()" slot="end" color="success">
+      <ion-icon name="create"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="padding">
+  <ion-list>
+    <ion-item>
+      <ion-slides pager="true" [options]="slideOptsOne" #slideWithNav
+        (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
+        <ion-slide *ngFor="let s of sliderOne.slidesItems">
+          <img src="{{s.foto}}">
+        </ion-slide>
+      </ion-slides>
+    </ion-item>
+  </ion-list>
+</ion-content>

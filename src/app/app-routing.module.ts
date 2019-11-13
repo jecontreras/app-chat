@@ -95,7 +95,8 @@ const routes: Routes = [
     component: PerfilComponent
   },
   { path: 'producto', loadChildren: './dialog/form/producto/producto.module#ProductoPageModule' },
-  { path: 'negocios', loadChildren: './dialog/form/negocios/negocios.module#NegociosPageModule' }
+  { path: 'negocios', loadChildren: './dialog/form/negocios/negocios.module#NegociosPageModule' },
+  { path: 'publicacion', loadChildren: './dialog/view/publicacion/publicacion.module#PublicacionPageModule' },
 ];
 
 @NgModule({

@@ -13,9 +13,8 @@
           </ion-title>
         </ion-col>
         <ion-col size="2">
-          <ion-button color="success" [routerLink]="['/notificacion']">
-            <ion-icon name="notifications-outline"></ion-icon>
-          </ion-button>
+          <ion-icon class="logo_notificacion" size="large" name="notifications-outline"
+            [routerLink]="['/notificacion']"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -24,9 +23,9 @@
 <ion-content>
   <ion-toolbar>
     <ion-grid>
-      <ion-row>
+      <ion-row class="border">
         <ion-col size="2">
-          <img [src]="data_user.foto">
+          <img [src]="data_user.foto" class="img_perfil padding_img">
         </ion-col>
         <ion-col size="8">
           <ion-searchbar animated placeholder="Buscar" [(ngModel)]="searchtxt" (input)="search()"></ion-searchbar>
@@ -42,8 +41,8 @@
     </ion-refresher-content>
   </ion-refresher>
   <ion-grid>
-    <ion-row *ngFor="let item of list_negocios" (click)="open_form(item)">
-      <ion-col size="12">
+    <ion-row class="border" *ngFor="let item of list_negocios">
+      <ion-col size="12" class="border">
         <ion-grid>
           <ion-row>
             <ion-col size="10">
@@ -67,38 +66,34 @@
         <ion-text color="dark">
           <p>{{ item.descripcion }}</p>
         </ion-text>
-        <div class="ion-text-center">
+        <div class="ion-text-center" (click)="open_view(item, 'img')">
           <h3><img [src]="item.foto" /></h3>
         </div>
       </ion-col>
-      <ion-col size="3">
+      <ion-col size="12">
         <ion-text color="dark">
-          <h6>{{ item.megusta + " Me gusta" }}</h6>
-        </ion-text>
-      </ion-col>
-      <ion-col size="9">
-        <ion-text color="dark">
-          <h6>{{ item.coun_comentario + " comentarios" }}</h6>
-        </ion-text>
-      </ion-col>
-      <ion-col size="4">
-        <ion-text color="dark">
-          <h6>
-            <ion-icon size="samll" name="heart-empty"></ion-icon><span>Megusta</span>
+          <h6>{{ item.megusta + " Me gusta" }} <span class="titulo">{{ item.coun_comentario + " comentarios" }}</span>
           </h6>
         </ion-text>
       </ion-col>
       <ion-col size="4">
         <ion-text color="dark">
           <h6>
-            <ion-icon size="samll" name="text"></ion-icon> <span>Comentar</span>
+            <ion-icon (click)="open_view(item, 'megusta')" size="samll" name="heart-empty"></ion-icon><span>Megusta</span>
+          </h6>
+        </ion-text>
+      </ion-col>
+      <ion-col size="4">
+        <ion-text color="dark">
+          <h6>
+            <ion-icon (click)="open_view(item, 'comentar')" size="samll" name="text"></ion-icon> <span>Comentar</span>
           </h6>
         </ion-text>
       </ion-col>
       <ion-col size="4">
         <ion-text colo="dark">
           <h6>
-            <ion-icon size="samll" name="share-alt"></ion-icon> <span>Conpartir</span>
+            <ion-icon (click)="open_view(item, 'compartir')" size="samll" name="share-alt"></ion-icon> <span>Conpartir</span>
           </h6>
         </ion-text>
       </ion-col>

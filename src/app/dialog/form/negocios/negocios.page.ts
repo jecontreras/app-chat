@@ -64,7 +64,7 @@ export class NegociosPage implements OnInit {
     });
     this.myForm_negocios = this.createMyForm();
 
-    if(this.evento){
+    if(Object.keys(this.evento).length > 0){
       this.data = this.evento;
       this.get_galeria(this.evento.id);
       this.myForm_negocios.patchValue(this.evento);
@@ -108,7 +108,7 @@ export class NegociosPage implements OnInit {
     })
     .subscribe((rta:any)=>{
       rta = rta.data[0];
-      // console.log(rta);
+      console.log(rta);
       if(rta){
         this.sliderOne.slidesItems = rta.archivos;
       }
@@ -154,8 +154,9 @@ export class NegociosPage implements OnInit {
   getImages() {
     this.options = {
       maximumImagesCount: 6,
-      width: 200,
-      quality: 25,
+      width: 128,
+      height: 215,
+      quality: 50,
       outputType: 1
     };
     this.imageResponse = [];
@@ -164,9 +165,7 @@ export class NegociosPage implements OnInit {
       for (var i = 0; i < results.length; i++) {
         this.imageResponse.push('data:image/jpeg;base64,' + results[i]);
       }
-      
-      this.uploadImage();
-
+      if(Object.keys(this.imageResponse).length  > 0) this.uploadImage();
     }, (err) => {
       alert(err);
     });
@@ -183,5 +182,42 @@ export class NegociosPage implements OnInit {
 
   cerrarModal() {
     this.modalCtrl.dismiss();
+  }
+
+  // TODO FUNCIONES DEL SLIDER
+  //Move to Next slide
+  slideNext(object, slideView) {
+    slideView.slideNext(500).then(() => {
+      this.checkIfNavDisabled(object, slideView);
+    });
+  }
+
+  //Move to previous slide
+  slidePrev(object, slideView) {
+    slideView.slidePrev(500).then(() => {
+      this.checkIfNavDisabled(object, slideView);
+    });;
+  }
+
+  //Method called when slide is changed by drag or navigation
+  SlideDidChange(object, slideView) {
+    this.checkIfNavDisabled(object, slideView);
+  }
+
+  //Call methods to check if slide is first or last to enable disbale navigation  
+  checkIfNavDisabled(object, slideView) {
+    this.checkisBeginning(object, slideView);
+    this.checkisEnd(object, slideView);
+  }
+
+  checkisBeginning(object, slideView) {
+    slideView.isBeginning().then((istrue) => {
+      if(object)object.isBeginningSlide = istrue;
+    });
+  }
+  checkisEnd(object, slideView) {
+    slideView.isEnd().then((istrue) => {
+      if(object)object.isEndSlide = istrue;
+    });
   }
 }

@@ -9,13 +9,12 @@
         </ion-col>
         <ion-col size="8">
           <ion-title class="ion-padding-top">
-            Ecomerce
+            <img class="logo" [src]="'./assets/imagenes/Logo.png'">
           </ion-title>
         </ion-col>
         <ion-col size="2">
-          <ion-button color="success" [routerLink]="['/notificacion']">
-            <ion-icon name="notifications"></ion-icon>
-          </ion-button>
+          <ion-icon class="logo_notificacion" size="large" name="notifications-outline"
+            [routerLink]="['/notificacion']"></ion-icon>
         </ion-col>
         <!-- <ion-col size="12">
           <ion-searchbar placeholder="Buscar Ecomerce" [(ngModel)]="searchtxt" (input)="search()"></ion-searchbar>

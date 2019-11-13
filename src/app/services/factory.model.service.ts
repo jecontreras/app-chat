@@ -156,7 +156,7 @@ export class FactoryModelService {
     try {
       if (io) {
         io.sails.autoConnect = false;
-        this.sock = io.sails.connect('https://back-ecomerce.herokuapp.com');
+        this.sock = io.sails.connect('https://backecomerce.herokuapp.com');
         this.scoket_global();
       }
     } catch (error) {

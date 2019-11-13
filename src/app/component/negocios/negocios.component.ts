@@ -7,6 +7,8 @@ import { NegociosAction } from 'src/app/redux/app.actions';
 import { ModalController } from '@ionic/angular';
 import { NegociosPage } from 'src/app/dialog/form/negocios/negocios.page';
 import { NegociosService } from 'src/app/service-component/negocios.services';
+import { ReduxserService } from 'src/app/service-component/redux.service';
+import { PublicacionPage } from 'src/app/dialog/view/publicacion/publicacion.page';
 
 @Component({
   selector: 'app-negocios',
@@ -26,6 +28,7 @@ export class NegociosComponent implements OnInit {
     private _store: Store<ARTICULOS>,
     private modalCtrl: ModalController,
     private router: Router,
+    private _reduxer: ReduxserService
   ) {
     this._store.select("name")
     .subscribe((store:any)=>{
@@ -57,13 +60,7 @@ export class NegociosComponent implements OnInit {
           this.ev.target.complete();
         }
       }
-      for(let row of rta){
-        let idx = this.list_negocios.find(item => item.id == row.id);
-        if(!idx){
-          let accion:any = new NegociosAction(row, 'post');
-          this._store.dispatch(accion);
-        }
-      }
+      this._reduxer.data_redux(rta, 'negocios', this.list_negocios);
       this.list_negocios = rta;
     });
   }
@@ -75,6 +72,15 @@ export class NegociosComponent implements OnInit {
   open_form(obj) {
     this.modalCtrl.create({
       component: NegociosPage,
+      componentProps: {
+        obj: obj
+      }
+    }).then(modal=>modal.present());
+  }
+  open_view(obj:any, opt:any) {
+    obj.opt = opt;
+    this.modalCtrl.create({
+      component: PublicacionPage,
       componentProps: {
         obj: obj
       }

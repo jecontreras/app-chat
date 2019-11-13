@@ -5,6 +5,7 @@ import { ProductoService } from 'src/app/service-component/producto.service';
 import { ARTICULOS } from 'src/app/redux/interfax/articulos';
 import { Router } from '@angular/router';
 import { SubastaAction, SearchAction } from 'src/app/redux/app.actions';
+import { ReduxserService } from 'src/app/service-component/redux.service';
 
 @Component({
   selector: 'app-subastas',
@@ -22,6 +23,7 @@ export class SubastasComponent implements OnInit {
     private _subasta: SubastasService,
     private _producto: ProductoService,
     private _store: Store<ARTICULOS>,
+    private _reduxer: ReduxserService,
     private router: Router,
   ) {
 
@@ -52,13 +54,7 @@ export class SubastasComponent implements OnInit {
           this.ev.target.complete();
         }
       }
-      for(let row of rta){
-        let idx = this.list_subasta.find(item => item.id == row.id);
-        if(!idx){
-          let accion:any = new SubastaAction(row, 'post');
-          this._store.dispatch(accion);
-        }
-      }
+      this._reduxer.data_redux(rta, 'subasta', this.list_subasta);
       this.list_subasta = rta;
     });
   }

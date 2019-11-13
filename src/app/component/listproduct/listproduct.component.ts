@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from 'src/app/service-component/producto.service';
 import * as _ from 'lodash';
+import { ARTICULOS } from 'src/app/redux/interfax/articulos';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-listproduct',
@@ -12,16 +14,22 @@ export class ListproductComponent implements OnInit {
   public list_articulo:any = [];
   public img:any = './assets/imagenes/dilisap1.png';
   public query:any = {
-    where:{}
+    where:{
+      opcion: 'activo'
+    }
   }
   public searchtxt:any = '';
   
   constructor(
-    private _Producto: ProductoService
+    private _Producto: ProductoService,
+    private _store: Store<ARTICULOS>,
   ) { 
-
-    this.get_producto();
-
+    this._store.select("name")
+    .subscribe((store:any)=>{
+      console.log(store);
+      if(Object.keys(store.search).length >0) { this.search(); this.searchtxt = store.search.txt;}
+      else this.get_producto();
+    });
   }
 
   ngOnInit() {

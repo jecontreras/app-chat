@@ -2,7 +2,7 @@
     <ion-toolbar>
         <ion-title *ngIf="!evento.id">Crear Productos</ion-title>
         <ion-title *ngIf="evento.id">Editar Productos</ion-title>
-        <ion-button slot="end" (click)="cerrarModal()">
+        <ion-button slot="end" (click)="cerrarModal()" color="danger">
             <ion-icon name="close-circle-outline"></ion-icon>
         </ion-button>
         <ion-button [disabled]="!disable_button" *ngIf="!evento.id" (click)="submit()" slot="end" color="success">

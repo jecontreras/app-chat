@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { ChatService } from 'src/app/service-component/chat.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FactoryModelService } from 'src/app/services/factory.model.service';
+import { ReduxserService } from 'src/app/service-component/redux.service';
 
 @Component({
   selector: 'app-chat-view',
@@ -44,6 +45,7 @@ export class ChatViewComponent implements OnInit {
     public formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
+    private _reduxer: ReduxserService,
     private _model: FactoryModelService
   ) {
     this._store.select("name")
@@ -89,6 +91,9 @@ export class ChatViewComponent implements OnInit {
     this.get_chat();
   }
   ajuste_key_chat(obj:any){
+    obj = obj.filter(row=>(row.emisor.id === this.data_user.id && row.reseptor.id === this.id)
+      || (row.emisor.id === this.id && row.reseptor.id === this.data_user.id)
+    );
     for(let row of obj){
       if(row.emisor.id === this.data_user.id){
         row.sender = 1;
@@ -120,13 +125,7 @@ export class ChatViewComponent implements OnInit {
           this.ev.target.complete();
         }
       }
-      for(let row of rta.mensaje){
-        let idx = this.list_mensajes.find(item => item.id == row.id);
-        if(!idx){
-          let accion:any = new MensajesAction(row, 'post');
-          this._store.dispatch(accion);
-        }
-      }
+      this._reduxer.data_redux(rta, 'chat_init', this.list_mensajes);
       this.ajuste_key_chat(rta.mensaje);
       this.list_mensajes = rta.mensaje;
       

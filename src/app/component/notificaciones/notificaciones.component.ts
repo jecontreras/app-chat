@@ -5,6 +5,7 @@ import { NOTIFICACIONES } from 'src/app/redux/interfax/notificaciones';
 import { NotificacionService } from 'src/app/service-component/notificacion.service';
 import { Router } from '@angular/router';
 import { NotificacionesAction } from 'src/app/redux/app.actions';
+import { ReduxserService } from 'src/app/service-component/redux.service';
 @Component({
   selector: 'app-notificaciones',
   templateUrl: './notificaciones.component.html',
@@ -45,6 +46,7 @@ export class NotificacionesComponent implements OnInit {
   constructor(
     private _store: Store<NOTIFICACIONES>,
     private _notificaion: NotificacionService,
+    private _reduxer: ReduxserService,
     private router: Router
   ) { 
     this._store.select("name")
@@ -162,13 +164,7 @@ export class NotificacionesComponent implements OnInit {
           this.ev.target.complete();
         }
       }
-      for(let row of rta.data){
-        let idx = this.list_notificacion.find((item:any) => item.id == row.id);
-        if(!idx){
-          let accion:any = new NotificacionesAction(row, 'post');
-          this._store.dispatch(accion);
-        }
-      }
+      this._reduxer.data_redux(rta, 'notificaciones', this.list_notificacion);
       this.list_notificacion = rta.data;
     });
   }

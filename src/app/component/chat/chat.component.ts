@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChatService } from 'src/app/service-component/chat.service';
 import { MensajesInitAction } from 'src/app/redux/app.actions';
+import { ReduxserService } from 'src/app/service-component/redux.service';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -22,6 +23,7 @@ export class ChatComponent implements OnInit {
     private _store: Store<MENSAJES>,
     private router: Router,
     private route: ActivatedRoute,
+    private _reduxer: ReduxserService,
     private _chat: ChatService
   ) {
     this._store.select("name")
@@ -64,13 +66,7 @@ export class ChatComponent implements OnInit {
             this.ev.target.complete();
           }
         }
-        for(let row of rta.data){
-          let idx = this.list_mensajes.find((item:any) => item.id == row.id);
-          if(!idx){
-            let accion:any = new MensajesInitAction(row, 'post');
-            this._store.dispatch(accion);
-          }
-        }
+        this._reduxer.data_redux(rta, 'chat', this.list_mensajes);
         this.list_mensajes = _.unionBy(this.list_mensajes || [], rta.data, 'id');
     });
   }

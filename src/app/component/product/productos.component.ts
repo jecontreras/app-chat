@@ -6,6 +6,7 @@ import { ModalController } from '@ionic/angular';
 import { ProductoPage } from '../../dialog/form/producto/producto.page';
 import { ProductoService } from 'src/app/service-component/producto.service';
 import { Router } from '@angular/router';
+import { ReduxserService } from 'src/app/service-component/redux.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ProductosComponent implements OnInit {
     private _store: Store<ARTICULOS>,
     private modalCtrl: ModalController,
     private _producto: ProductoService,
+    private _reduxer: ReduxserService,
     private router: Router,
   ) { 
 
@@ -48,7 +50,7 @@ export class ProductosComponent implements OnInit {
   async get_productos(){
     return this._producto.get({
       where:{
-        // user: this.data_user.id
+        user: this.data_user.id
       }
     }).subscribe((articulo:any)=>{
       articulo = articulo.data;
@@ -59,13 +61,7 @@ export class ProductosComponent implements OnInit {
           this.ev.target.complete();
         }
       }
-      for(let row of articulo){
-        let idx = this.list_product.find(item => item.id == row.id);
-        if(!idx){
-          let accion:any = new ArticulosAction(row, 'post');
-          this._store.dispatch(accion);
-        }
-      }
+      this._reduxer.data_redux(articulo, 'productos', this.list_product);
       this.list_product = articulo;
     });
   }
