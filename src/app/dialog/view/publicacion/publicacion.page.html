@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-title>Crear Nota</ion-title>
     <ion-button slot="end" (click)="cerrarModal()" color="danger">
@@ -7,21 +7,115 @@
     <ion-button *ngIf="false" (click)="submit()" slot="end" color="success">
       <ion-icon name="save"></ion-icon>
     </ion-button>
-    <ion-button  *ngIf="false" (click)="editar()" slot="end" color="success">
+    <ion-button *ngIf="false" (click)="editar()" slot="end" color="success">
       <ion-icon name="create"></ion-icon>
     </ion-button>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
-<ion-content class="padding">
-  <ion-list>
-    <ion-item>
-      <ion-slides pager="true" [options]="slideOptsOne" #slideWithNav
-        (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
-        <ion-slide *ngFor="let s of sliderOne.slidesItems">
-          <img src="{{s.foto}}">
-        </ion-slide>
-      </ion-slides>
-    </ion-item>
-  </ion-list>
+<ion-content class="padding " fullscreen>
+  <div *ngIf="evento.opt === 'img'">
+    <ion-toolbar class="border">
+        <ion-grid>
+            <ion-row>
+              <ion-col size="10">
+                <ion-text color="dark">
+                  <h6>{{ evento.titulo }}</h6>
+                </ion-text>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon name="close-circle-outline" color="medium" size="large" class="padding_img" (click)="cerrarModal()"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+    </ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-slides>
+            <ion-slide *ngFor="let item of slidesItems">
+              <img [src]="item.foto" />
+              <h2></h2>
+              <p>{{ evento.descripcion }}</p>
+            </ion-slide>
+          </ion-slides>
+        </ion-col>
+        <ion-col size="12">
+          <ion-text color="dark">
+            <h6>{{ evento.megusta + " Me gusta" }} <span
+                class="titulo">{{ evento.coun_comentario + " comentarios" }}</span>
+            </h6>
+          </ion-text>
+        </ion-col>
+        <ion-col size="4">
+          <ion-text color="dark">
+            <h6>
+              <ion-icon (click)="open_view(evento, 'megusta')" size="samll" name="heart-empty"></ion-icon>
+              <span>Megusta</span>
+            </h6>
+          </ion-text>
+        </ion-col>
+        <ion-col size="4">
+          <ion-text color="dark">
+            <h6 (click)="cambiar_tab()">
+              <ion-icon size="samll" name="text"></ion-icon>
+              <span>Comentar</span>
+            </h6>
+          </ion-text>
+        </ion-col>
+        <ion-col size="4">
+          <ion-text colo="dark">
+            <h6>
+              <ion-icon (click)="open_view(evento, 'compartir')" size="samll" name="share-alt"></ion-icon>
+              <span>Conpartir</span>
+            </h6>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div *ngIf="evento.opt === 'comentar'">
+    <ion-list>
+      <ion-list-header class="border">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="10">
+              <ion-text color="dark">
+                <h6>Comentarios</h6>
+              </ion-text>
+            </ion-col>
+            <ion-col size="2">
+              <ion-icon name="close-circle-outline" color="medium" size="large" class="padding_img" (click)="cerrarModal()"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list-header>
+
+      <ion-item class="border" *ngFor="let item of list_comentarios">
+        <ion-avatar slot="start">
+          <img [src]="item.user.foto">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ item.user.username }}</h2>
+          <p>{{ item.comentario }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
+<ion-footer *ngIf="evento.opt === 'comentar'">
+  <ion-toolbar class="border">
+    <form [formGroup]="myForm_comentar" (ngSubmit)="onSubmit_comentario()">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="11">
+            <ion-input formControlName="comentario" type="text" placeholder="Comentar"></ion-input>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon size="large" (click)="onSubmit_comentario()" name="arrow-forward"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </ion-toolbar>
+</ion-footer>

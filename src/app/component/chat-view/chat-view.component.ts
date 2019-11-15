@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import {IonContent} from '@ionic/angular';
 import { FormGroup, FormBuilder, RequiredValidator, Validators } from '@angular/forms';
 import { MensajesAction } from 'src/app/redux/app.actions';
 import { Store } from '@ngrx/store';
@@ -24,20 +25,10 @@ export class ChatViewComponent implements OnInit {
   public ev:any;
   public count:any;
   public id_articulo:any;
-  conversation = [
-    { text: 'Hey, that\'s an awesome chat UI', sender: 0, image: './assets/images/sg2.jpg' },
-    { text: 'Right, it totally blew my mind', sender: 1, image: './assets/images/sg1.jpg', read: true, delivered: false, sent: true },
-    { text: 'And it is free ?', sender: 0, image: './assets/images/sg2.jpg' },
-    { text: 'Yes, totally free', sender: 1, image: './assets/images/sg1.jpg', read: true, delivered: true, sent: true },
-    { text: 'Wow, that\'s so cool', sender: 0, image: './assets/images/sg2.jpg' },
-    { text: 'Hats off to the developers', sender: 1, image: './assets/images/sg1.jpg', read: false, delivered: true, sent: true },
-    { text: 'Oh yes, this is gooood stuff', sender: 0, image: './assets/images/sg2.jpg' },
-    { text: 'Check out their other designs ', sender: 1, image: './assets/images/sg1.jpg', read: false, delivered: false, sent: true }
-
-  ]
+  public unico:any = 0;
   phone_model = 'iPhone';
   input = '';
-
+  @ViewChild('content') private content: any
 
   constructor(
     private _store: Store<MENSAJES>,
@@ -57,6 +48,7 @@ export class ChatViewComponent implements OnInit {
         }
         if(Object.keys(store.mensajes).length >0) {
           // this.list_mensajes = store.mensajes;
+          this.unico = 0;
           this.ajuste_key_chat(store.mensajes);
           this.list_mensajes = _.unionBy(this.list_mensajes || [], store.mensajes, 'id');
           // this.list_mensajes = _.orderBy(this.list_mensajes, ['createdAt'], ['asc']);
@@ -76,14 +68,19 @@ export class ChatViewComponent implements OnInit {
       init: any = 0
     ;
     let interval = setInterval(() => {
-      init += 1;
+      init++;
+      this.unico++;
       if (init === 5) {
         init = 0;
       }
+      if(this.unico === 2) this.scrollToBottomOnInit();
     }, 1000);
   }
   ngOnInit() {
 
+  }
+  scrollToBottomOnInit() {
+    this.content.scrollToBottom(1000);
   }
   doRefresh(ev){
     this.ev = ev;
@@ -128,6 +125,7 @@ export class ChatViewComponent implements OnInit {
       this._reduxer.data_redux(rta, 'chat_init', this.list_mensajes);
       this.ajuste_key_chat(rta.mensaje);
       this.list_mensajes = rta.mensaje;
+      this.scrollToBottomOnInit();
       
     });
   }
@@ -151,10 +149,8 @@ export class ChatViewComponent implements OnInit {
       .subscribe((res: any) => {
         // console.log(res);
           this.myForm_chat = this.create_form();
+          this.scrollToBottomOnInit();
       });
 
-  }
-  codigo() {
-    return (Date.now().toString(36).substr(2, 3) + Math.random().toString(36).substr(2, 2)).toUpperCase();
   }
 }

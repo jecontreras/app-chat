@@ -18,4 +18,7 @@ export class NegociosService {
   saved (query: any){
     return this._model.create('negocios', query);
   }
+  edit(query:any){
+    return this._model.update('negocios', query.id, query);
+  }
 }

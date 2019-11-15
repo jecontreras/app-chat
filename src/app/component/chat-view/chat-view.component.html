@@ -22,34 +22,14 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding-vertical ion-fullscreen">
+  <!-- <ion-button (click)="scrollToBottomOnInit()">
+    dale
+  </ion-button> -->
   <ion-refresher pullFactor="0.5" slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <!-- <ion-list *ngIf="disable_list">
-    <ion-list-header>
-      Conversacion {{ data.username || 'Andres'}}
-    </ion-list-header>
-    <ion-item *ngFor="let item of list_mensajes" no-lines>
-      <ion-content #message>
-        <div class="chat-message ion-text-left" *ngIf="item.emisor.id === data_user.id">
-          <div class="right-bubble">
-            <span class="msg-name">Yo</span>
-            <span class="msg-date">{{item.creado | date:'short'}}</span>
-            <p class="ion-text-wrap">{{item.mensaje}}</p>
-          </div>
-        </div>
-        <div class="chat-message ion-text-left" *ngIf="item.emisor.id !== data_user.id">
-          <div class="left-bubble">
-            <span class="msg-name">{{item.reseptor.username}}</span>
-            <span class="msg-date">{{item.creado | date:'short'}}</span>
-            <p class="ion-text-wrap">{{item.mensaje}}</p>
-          </div>
-        </div>
-      </ion-content>
-    </ion-item>
-  </ion-list> -->
   <div id="chat-parent" class="bg-image" [ngClass]="{ 'bg-image-X': phone_model=='iPhone X'}">
-    <div id="chat-container">
+    <ion-content id="chat-container" #content>
       <ion-row *ngFor="let conv of list_mensajes; let i = index;" class="full no-padding">
         <ion-col class="no-padding chat-row" [ngClass]="{ 'reverse': conv.sender}">
           <div class="avatar-parent">
@@ -76,7 +56,7 @@
 
         </ion-col>
       </ion-row>
-    </div>
+    </ion-content>
   </div>
 </ion-content>
 <ion-footer>

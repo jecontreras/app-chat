@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { FactoryModelService } from '../services/factory.model.service';
 import { Store } from '@ngrx/store';
 import { ARTICULOS } from '../redux/interfax/articulos';
-import { NegociosAction, SubastaAction, ArticulosAction, MensajesAction, MensajesInitAction, NotificacionesAction } from '../redux/app.actions';
+import { NegociosAction, SubastaAction, ArticulosAction, MensajesAction, MensajesInitAction, NotificacionesAction, ComentariosAction } from '../redux/app.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +48,10 @@ export class ReduxserService {
         if(modelo === 'notificaciones') {
           if(idx) accion = new NotificacionesAction(row, 'put');
           else accion = new NotificacionesAction(row, 'post');
+        }
+        if(modelo === 'comentario') {
+          if(idx) accion = new ComentariosAction(row, 'put');
+          else accion = new ComentariosAction(row, 'post');
         }
         if(accion) this._store.dispatch(accion);
       }

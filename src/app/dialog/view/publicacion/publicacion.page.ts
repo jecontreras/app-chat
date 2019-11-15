@@ -1,6 +1,13 @@
 import { Component, OnInit, ViewChildren } from '@angular/core';
 import { IonSlides, ModalController, NavParams } from '@ionic/angular';
 import { ArchivoService } from 'src/app/service-component/archivo.services';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ARTICULOS } from 'src/app/redux/interfax/articulos';
+import { Store } from '@ngrx/store';
+import * as _ from 'lodash';
+import { ComentarioService } from 'src/app/service-component/comentario.service';
+import { ReduxserService } from 'src/app/service-component/redux.service';
+import { ComentariosAction } from 'src/app/redux/app.actions';
 
 @Component({
   selector: 'app-publicacion',
@@ -10,45 +17,60 @@ import { ArchivoService } from 'src/app/service-component/archivo.services';
 export class PublicacionPage implements OnInit {
 
   public evento:any = {};
-
-  @ViewChildren('slideWithNav') slideWithNav: IonSlides;
-  sliderOne: any;
-  //Configuration for each Slider
-  slideOptsOne = {
-    initialSlide: 0,
-    slidesPerView: 1,
-    autoplay: true
-  };
+  public data_user:any = {};
+  public slidesItems:any = [];
+  public myForm_comentar:any;
+  public list_comentarios:any = [];
 
   constructor(
     private modalCtrl: ModalController,
     private _archivo: ArchivoService,
     private navparams: NavParams,
+    private _store: Store<ARTICULOS>,
+    public formBuilder: FormBuilder,
+    public _comentario: ComentarioService,
+    private _reduxer: ReduxserService,
   ) { 
-    this.sliderOne =
-      {
-        isBeginningSlide: true,
-        isEndSlide: false,
-        slidesItems: [
-          {
-            id: 1,
-            foto: './assets/imagenes/dilisap1.png'
-          },
-          {
-            id: 2,
-            foto: './assets/imagenes/dilisap1.png'
-          }
-        ]
-    };
     this.evento = (this.navparams.get('obj')) || {};
-    if(Object.keys(this.evento).length === 0) this.cerrarModal();
-    this.get_galeria(this.evento.id);
+    console.log(this.evento)
+    this.init();
   }
 
   ngOnInit() {
   }
-
-  get_galeria(id){
+  init(){
+    if(Object.keys(this.evento).length === 0) this.cerrarModal();
+    this.get_galeria(this.evento.id);
+    this._store.select("name")
+    .subscribe((store:any)=>{
+      console.log(store)
+      this.data_user = store.user;
+      if(Object.keys(this.data_user).length ===0) this.cerrarModal();
+      if(Object.keys(store.comentarios).length === 0) {
+        if(this.evento.opt === 'comentar'&& this.evento.id) this.get_comentario();
+      }
+      else {
+        if(this.evento.opt === 'comentar' && this.evento.id) this.validar_comentario(store.comentarios);
+      }
+    });
+    this.myForm_comentar = this.createMyForm();
+    if(this.evento.opt === 'comentar'){
+      // this.get_comentario();
+    }
+  }
+  cambiar_tab(){
+    this.evento.opt = "comentar";
+    this.init();
+  }
+  createMyForm(){
+    return this.formBuilder.group({
+      "comentario": ['', Validators.required],
+      "opcion": [this.evento.opt, Validators.required],
+      "negocios": [this.evento.id, Validators.required],
+      "user": [this.data_user.id, Validators.required],
+    });
+  }
+  get_galeria(id:any){
     return this._archivo.get({
       where:{
         negocios: id
@@ -56,52 +78,59 @@ export class PublicacionPage implements OnInit {
     })
     .subscribe((rta:any)=>{
       rta = rta.data[0];
-      console.log(rta);
+      // console.log(rta);
       if(rta){
-        this.sliderOne.slidesItems = rta.archivos;
+        this.slidesItems = rta.archivos;
       }
     });
   }
-
+  validar_comentario(obj:any){
+    for(let row of obj){
+      if(row.negocios.id === this.evento.id) {
+        let idx = _.findIndex(this.list_comentarios, ['id', row.id]);
+        if(idx == -1){
+          this.list_comentarios.push(row);
+        }
+      }
+    }
+  }
+  get_comentario(){
+    let query = {
+      where:{
+        user: this.data_user.id
+      }
+    };
+    return this._comentario.get(query)
+    .subscribe((rta:any)=>{
+      rta = rta.data;
+      console.log(rta);
+      this.proceso_comentario(rta);
+      this.list_comentarios = rta;
+    });
+  }
+  proceso_comentario(obj:any){
+    let lista:any = []
+    for(let row of obj){
+      if(row.negocios.id === this.evento.id) lista.push(row);
+    }
+    this._reduxer.data_redux(lista, 'comentario', this.list_comentarios);
+  }
+  onSubmit_comentario(){
+    let data = this.myForm_comentar.value;
+    console.log(data);
+    return this._comentario.saved(data)
+    .subscribe((rta:any)=>{
+      console.log(rta);
+      if(rta){
+        this.myForm_comentar = this.createMyForm();
+        let accion = new ComentariosAction(rta, 'post');
+        this._store.dispatch(accion);
+      }
+    });
+  }
   cerrarModal() {
     this.modalCtrl.dismiss();
   }
 
-  // TODO FUNCIONES DEL SLIDER
-  //Move to Next slide
-  slideNext(object, slideView) {
-    slideView.slideNext(500).then(() => {
-      this.checkIfNavDisabled(object, slideView);
-    });
-  }
-
-  //Move to previous slide
-  slidePrev(object, slideView) {
-    slideView.slidePrev(500).then(() => {
-      this.checkIfNavDisabled(object, slideView);
-    });;
-  }
-
-  //Method called when slide is changed by drag or navigation
-  SlideDidChange(object, slideView) {
-    this.checkIfNavDisabled(object, slideView);
-  }
-
-  //Call methods to check if slide is first or last to enable disbale navigation  
-  checkIfNavDisabled(object, slideView) {
-    this.checkisBeginning(object, slideView);
-    this.checkisEnd(object, slideView);
-  }
-
-  checkisBeginning(object, slideView) {
-    slideView.isBeginning().then((istrue) => {
-      if(object)object.isBeginningSlide = istrue;
-    });
-  }
-  checkisEnd(object, slideView) {
-    slideView.isEnd().then((istrue) => {
-      if(object)object.isEndSlide = istrue;
-    });
-  }
-
+  
 }

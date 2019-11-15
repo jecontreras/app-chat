@@ -86,5 +86,21 @@ export class NegociosComponent implements OnInit {
       }
     }).then(modal=>modal.present());
   }
+  like(obj){
+    if(!obj.check){
+      obj.check = true;
+      let query = {
+        id: obj.id,
+        megusta: obj.megusta++
+      };
+      return this._negocios.edit(query)
+      .subscribe((res:any)=>{
+        if(!res.id) return false;
+        // console.log(res)
+        let accion = new NegociosAction(obj, 'put');
+        this._store.dispatch(accion);
+      });
+    }
+  }
 
 }

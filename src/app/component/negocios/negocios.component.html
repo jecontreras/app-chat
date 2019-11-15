@@ -78,22 +78,23 @@
       </ion-col>
       <ion-col size="4">
         <ion-text color="dark">
-          <h6>
-            <ion-icon (click)="open_view(item, 'megusta')" size="samll" name="heart-empty"></ion-icon><span>Megusta</span>
+          <h6 (click)="like(item)">
+            <ion-icon *ngIf="item.check" color="danger" size="samll" name="heart-empty"></ion-icon><span *ngIf="item.check">Megusta</span>
+            <ion-icon *ngIf="!item.check" color="danger" size="samll" name="heart-empty"></ion-icon><span *ngIf="!item.check">Megusta</span>
           </h6>
         </ion-text>
       </ion-col>
       <ion-col size="4">
         <ion-text color="dark">
-          <h6>
-            <ion-icon (click)="open_view(item, 'comentar')" size="samll" name="text"></ion-icon> <span>Comentar</span>
+          <h6 (click)="open_view(item, 'comentar')">
+            <ion-icon size="samll" name="text"></ion-icon> <span>Comentar</span>
           </h6>
         </ion-text>
       </ion-col>
       <ion-col size="4">
         <ion-text colo="dark">
           <h6>
-            <ion-icon (click)="open_view(item, 'compartir')" size="samll" name="share-alt"></ion-icon> <span>Conpartir</span>
+            <ion-icon size="samll" name="share-alt"></ion-icon> <span>Conpartir</span>
           </h6>
         </ion-text>
       </ion-col>

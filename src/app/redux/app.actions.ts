@@ -35,6 +35,10 @@ export class NotificacionesAction implements Action {
     readonly type = NOTIFICACIONES;
     constructor( public payload: object,  public opt: string){}
 }
+export class ComentariosAction implements Action {
+    readonly type = COMENTARIOS;
+    constructor( public payload: object,  public opt: string){}
+}
 export class ComprasAction implements Action {
     readonly type = COMPRAS;
     constructor( public payload: object,  public opt: string){}
@@ -79,6 +83,7 @@ export type actions = NameappAction         |
                       ArticulosAction       |
                       MensajesAction        |
                       NotificacionesAction  |
+                      ComentariosAction     |
                       ComprasAction         |
                       CartAction            |
                       UserAction            |
