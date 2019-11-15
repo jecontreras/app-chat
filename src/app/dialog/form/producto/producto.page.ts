@@ -325,10 +325,12 @@ export class ProductoPage implements OnInit {
     data.list_envios = this.data.list_envios;
     data.list_galeria = this.data.list_galeria;
     this.disable_button = false;
+    data = _.omitBy(data, row=> row == '' || row == null);
+    delete data.user;
     this._Articulo.edit(data)
     .subscribe(async(rta:any)=>{
       // console.log(rta);
-      let accion = new ArticulosAction(data, 'put');
+      let accion = new ArticulosAction(rta, 'put');
       this._store.dispatch(accion);
       const toast = await this.toastController.create({
         message: 'Actualizado.',
