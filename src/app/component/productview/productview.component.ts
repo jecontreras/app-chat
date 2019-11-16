@@ -5,10 +5,10 @@ import { Store } from '@ngrx/store';
 import { ARTICULOS } from 'src/app/redux/interfax/articulos';
 import * as _ from 'lodash';
 import { CartAction, SearchAction } from 'src/app/redux/app.actions';
-import { ToastController } from '@ionic/angular';
 import { ProductoService } from 'src/app/service-component/producto.service';
 import { ArchivoService } from 'src/app/service-component/archivo.services';
 import { SubastasService } from 'src/app/service-component/subastas.service';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -26,6 +26,7 @@ export class ProductviewComponent implements OnInit {
   public disable_list:boolean = true;
   public data_user:any = {};
   public disable_data:boolean = true;
+  public loading:any;
 
   @ViewChildren('slideWithNav') slideWithNav: IonSlides;
   @ViewChildren('slideWithNav2') slideWithNav2: IonSlides;
@@ -82,7 +83,8 @@ export class ProductviewComponent implements OnInit {
     private _producto: ProductoService,
     private _archivo: ArchivoService,
     private _subasta: SubastasService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public loadingController: LoadingController,
   ) {
     this._store.select("name")
       .subscribe((store: any) => {
@@ -93,18 +95,22 @@ export class ProductviewComponent implements OnInit {
     this.init();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.sliderOne =
       {
         isBeginningSlide: true,
         isEndSlide: false,
-        slidesItems: [
-          {
-            id: 1,
-            foto: './assets/imagenes/dilisap1.png'
-          },
-        ]
+        slidesItems: []
       };
+
+       this.loading = await this.loadingController.create({
+        spinner: 'crescent',
+        message: 'Iniciando...',
+        translucent: true,
+        cssClass: 'custom-class custom-loading'
+      });
+
+      await this.loading.present();
   }
   doRefresh(ev){
     this.ev = ev;
@@ -123,6 +129,10 @@ export class ProductviewComponent implements OnInit {
           if(!this.data) return false;
           this.data.cantida_adquiridad = String(1);
           if (this.data.list_informacion.length === 0 ) this.data.informacion_articulo = [];
+          else{
+            let filtro =this.data.list_informacion.filter(row=>row.value); 
+            this.data.list_informacion = filtro;
+          }
           // if (this.data.comentario.length === 0) this.data.comentario = [{ key: "none", value: "none" }];
           if (this.data.list_envios.length === 0) this.data.list_envios = [];
           // if (this.data.list_comentario_vendedor.length === 0) this.data.list_comentario_vendedor = [{ username: "pos_r", titulo: "Excelente", comentario: "genial vendedor" }];
@@ -148,6 +158,40 @@ export class ProductviewComponent implements OnInit {
       limit: 1
     });
   }
+  async ofreciendo(){
+    const alert = await this.alertController.create({
+      header: 'Producto Subastando',
+      inputs: [
+        {
+          name: 'valor',
+          type: 'number',
+          placeholder: 'Cuanto ofreces',
+          value: ''
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: (data) => {
+            console.log('Confirm Ok', data.valor);
+            if(data.valor){
+              this.data.precio_ofrece = data.valor;
+              this.ofertalo();
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
   async ocultar_disable(){
     this.disable_data = false;
     const alert = await this.alertController.create({
@@ -170,7 +214,10 @@ export class ProductviewComponent implements OnInit {
       // console.log(rta);
       if(rta){
         this.sliderOne.slidesItems = rta.archivos;
+      }else{
+        this.sliderOne.slidesItems.push({id: 1, foto: "https://hostel.keralauniversity.ac.in/images/NoImage.jpg"})
       }
+      this.loading.dismiss();
     });
   }
   submit_cart(opt: any) {
@@ -194,7 +241,9 @@ export class ProductviewComponent implements OnInit {
   }
   data_referecencia_articulo(){
     return this._producto.get({
-      where:{},
+      where:{
+        id: { '!=' : this.data.id }
+      },
       sort: 'createdAt DESC'
     })
     .subscribe((res:any)=>{

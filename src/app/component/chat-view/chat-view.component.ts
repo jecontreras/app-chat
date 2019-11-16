@@ -73,7 +73,7 @@ export class ChatViewComponent implements OnInit {
       if (init === 5) {
         init = 0;
       }
-      if(this.unico === 2) this.scrollToBottomOnInit();
+      if(this.unico === 1) this.scrollToBottomOnInit();
     }, 1000);
   }
   ngOnInit() {
@@ -88,9 +88,9 @@ export class ChatViewComponent implements OnInit {
     this.get_chat();
   }
   ajuste_key_chat(obj:any){
-    obj = obj.filter(row=>(row.emisor.id === this.data_user.id && row.reseptor.id === this.id)
-      || (row.emisor.id === this.id && row.reseptor.id === this.data_user.id)
-    );
+    // obj = obj.filter(row=>(row.emisor.id === this.data_user.id && row.reseptor.id === this.id)
+    //   || (row.emisor.id === this.id && row.reseptor.id === this.data_user.id)
+    // );
     for(let row of obj){
       if(row.emisor.id === this.data_user.id){
         row.sender = 1;
@@ -106,6 +106,7 @@ export class ChatViewComponent implements OnInit {
       }
 
     }
+    console.log(obj)
   }
 
   get_chat() {
@@ -113,7 +114,9 @@ export class ChatViewComponent implements OnInit {
       where: {
         reseptor: this.id,
         emisor: this.data_user.id
-      }
+      },
+      sort: 'createdAt DESC',
+      limit: 20
     }).subscribe((rta: any) => {
       console.log(rta)
       if(this.ev){

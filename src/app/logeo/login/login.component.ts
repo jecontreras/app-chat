@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
   ) {
     this.myForm_login = this.create_form();
+    console.log("perris")
     if (this._authSrvice.isLoggedIn()) {
       this.router.navigate(['home']);
     }

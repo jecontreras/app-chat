@@ -100,21 +100,14 @@ export class ProductoPage implements OnInit {
       {
         isBeginningSlide: true,
         isEndSlide: false,
-        slidesItems: [
-          {
-            id: 1,
-            foto: './assets/imagenes/dilisap1.png'
-          },
-          {
-            id: 2,
-            foto: './assets/imagenes/dilisap1.png'
-          }
-        ]
+        slidesItems: []
     };
   }
 
   ngOnInit() {
-    
+    if(!this.data.id){
+      this.getImages();
+    }
   }
   deta_init(){
     this.myForm_product = this.createMyForm();
@@ -355,9 +348,8 @@ export class ProductoPage implements OnInit {
     this.imagePicker.getPictures(this.options).then((results) => {
       for (var i = 0; i < results.length; i++) {
         this.imageResponse.push('data:image/jpeg;base64,' + results[i]);
+        this.sliderOne.slidesItems.push('data:image/jpeg;base64,' + results[i]);
       }
-      
-      this.uploadImage();
 
     }, (err) => {
       alert(err);

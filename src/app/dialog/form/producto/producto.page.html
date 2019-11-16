@@ -15,7 +15,7 @@
 </ion-header>
 
 <ion-content fullscreen>
-    <ion-list *ngIf="data.id">
+    <ion-list>
         <ion-item>
             <ion-slides pager="true" [options]="slideOptsOne" #slideWithNav
                 (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
@@ -30,9 +30,11 @@
                     <h5> Galeria </h5>
                 </ion-text>
                 <ion-buttons slot="primary">
-                    <!-- <ion-input type="file" (change)="view_image($event)"></ion-input> -->
                     <ion-button (click)="getImages()">
                         <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+                    </ion-button>
+                    <ion-button (click)="uploadImage()" *ngIf="data.id">
+                        <ion-icon name="cloud-upload"></ion-icon>
                     </ion-button>
                 </ion-buttons>
             </ion-toolbar>
@@ -90,7 +92,7 @@
                     </ion-item>
                 </ion-list>
             </ion-item>
-            <ion-item>
+            <!-- <ion-item>
                 <ion-button (click)="get_color()">
                     <ion-icon name="sync"></ion-icon>
                 </ion-button>
@@ -104,7 +106,7 @@
                         </ion-select>
                     </ion-item>
                 </ion-list>
-            </ion-item>
+            </ion-item> -->
             <ion-item>
                 <!-- <ion-icon name="keypad" item-start></ion-icon> -->
                 <ion-label position="floating">Cantidad</ion-label>

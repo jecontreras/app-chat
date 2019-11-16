@@ -74,20 +74,15 @@ export class NegociosPage implements OnInit {
       {
         isBeginningSlide: true,
         isEndSlide: false,
-        slidesItems: [
-          {
-            id: 1,
-            foto: './assets/imagenes/dilisap1.png'
-          },
-          {
-            id: 2,
-            foto: './assets/imagenes/dilisap1.png'
-          }
-        ]
+        slidesItems: []
     };
+
    }
 
   ngOnInit() {
+    if(!this.data.id){
+      this.getImages();
+    }
   }
   createMyForm(){
     return this.formBuilder.group({
@@ -164,8 +159,8 @@ export class NegociosPage implements OnInit {
     this.imagePicker.getPictures(this.options).then((results) => {
       for (var i = 0; i < results.length; i++) {
         this.imageResponse.push('data:image/jpeg;base64,' + results[i]);
+        this.sliderOne.slidesItems.push('data:image/jpeg;base64,' + results[i]);
       }
-      if(Object.keys(this.imageResponse).length  > 0) this.uploadImage();
     }, (err) => {
       alert(err);
     });
