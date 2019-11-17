@@ -17,7 +17,7 @@ import { NegociosComponent } from './component/negocios/negocios.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {

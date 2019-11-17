@@ -1,14 +1,10 @@
-<ion-header>
-  <ion-toolbar id="ion-content-login">
-    <ion-text color="dark">
-      <h6>Logo 1.0</h6>
-    </ion-text>
-    <ion-img style="height: 141px;" [src]="'./assets/imagenes/dilisap1.png'"></ion-img>
-  </ion-toolbar>
-</ion-header>
 <ion-content id="ion-content-login">
-  <br>
-  <br>
+  <br><br>
+  <ion-toolbar id="ion-content-login">
+    <div class="ion-text-center">
+        <img class="logo2" [src]="'./assets/imagenes/Logo.png'">
+    </div>
+  </ion-toolbar>
   <form [formGroup]="myForm_login" (ngSubmit)="submit_login()">
     <ion-list lines="full" class="ion-no-margin ion-no-padding">
       <ion-item>

@@ -348,9 +348,11 @@ export class ProductoPage implements OnInit {
     this.imagePicker.getPictures(this.options).then((results) => {
       for (var i = 0; i < results.length; i++) {
         this.imageResponse.push('data:image/jpeg;base64,' + results[i]);
-        this.sliderOne.slidesItems.push('data:image/jpeg;base64,' + results[i]);
+        this.sliderOne.slidesItems.push({
+          id: i,
+          foto: 'data:image/jpeg;base64,' + results[i]
+        });
       }
-
     }, (err) => {
       alert(err);
     });
