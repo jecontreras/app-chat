@@ -1,10 +1,10 @@
 import { Store } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductoService } from 'src/app/service-component/producto.service';
 import { ARTICULOS } from 'src/app/redux/interfax/articulos';
 import { Router } from '@angular/router';
 import { NegociosAction } from 'src/app/redux/app.actions';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonInfiniteScroll } from '@ionic/angular';
 import { NegociosPage } from 'src/app/dialog/form/negocios/negocios.page';
 import { NegociosService } from 'src/app/service-component/negocios.services';
 import { ReduxserService } from 'src/app/service-component/redux.service';
@@ -22,6 +22,7 @@ export class NegociosComponent implements OnInit {
   public ev:any = {};
   public disable_list:boolean = true;
 
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   constructor(
     private _producto: ProductoService,
     private _negocios: NegociosService,
@@ -45,6 +46,22 @@ export class NegociosComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  loadData(event) {
+    setTimeout(() => {
+      console.log('Done');
+      event.target.complete();
+
+      // App logic to determine if all data is loaded
+      // and disable the infinite scroll
+      event.target.disabled = true;
+    }, 500);
+  }
+
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  }
+
   get_articulo(){
     return this._negocios.get({
       where:{

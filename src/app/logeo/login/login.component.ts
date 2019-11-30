@@ -47,6 +47,14 @@ export class LoginComponent implements OnInit {
 
   async submit_login() {
     let data = this.myForm_login.value;
+    if(!data.email || !data.password) {
+      const toast = await this.toastController.create({
+        message: "Por favor introducir tu email o tu password",
+        duration: 2000
+      });
+      toast.present();
+      return false;
+    }
     const loading = await this.loadingController.create({
       spinner: 'crescent',
       message: 'Iniciando...',

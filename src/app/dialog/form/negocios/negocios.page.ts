@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { NegociosAction } from 'src/app/redux/app.actions';
 import { ArchivoService } from 'src/app/service-component/archivo.services';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-negocios',
@@ -30,6 +31,7 @@ export class NegociosPage implements OnInit {
   public disable_button:boolean = true;
   public imageResponse:any = [];
   public options:any;
+  public loading:any;
 
 
   @ViewChildren('slideWithNav') slideWithNav: IonSlides;
@@ -49,11 +51,13 @@ export class NegociosPage implements OnInit {
     private _negocios: NegociosService,
     private _store: Store<ARTICULOS>,
     private _archivo: ArchivoService,
+    public toastController: ToastController,
     private imagePicker: ImagePicker,
+    public loadingController: LoadingController,
   ) {
     
     this.evento = (this.navparams.get('obj')) || {};
-    console.log(this.evento);
+    console.log(this.evento); 
     this._store.select("name")
     .subscribe((store:any)=>{
       this.data_user = store.user;
@@ -79,10 +83,20 @@ export class NegociosPage implements OnInit {
 
    }
 
-  ngOnInit() {
+   async ngOnInit() {
     if(!this.data.id){
       this.getImages();
     }
+  }
+  async loadings(){
+    this.loading = await this.loadingController.create({
+      spinner: 'crescent',
+      message: 'Iniciando...',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+
+    await this.loading.present();
   }
   createMyForm(){
     return this.formBuilder.group({
@@ -103,10 +117,15 @@ export class NegociosPage implements OnInit {
     })
     .subscribe((rta:any)=>{
       rta = rta.data[0];
-      console.log(rta);
+      // console.log(rta);
       if(rta){
         this.sliderOne.slidesItems = rta.archivos;
+      }else{
+        this.sliderOne.slidesItems.push({id: 1, foto: "https://hostel.keralauniversity.ac.in/images/NoImage.jpg"})
       }
+      // this.loading.dismiss();
+    },(err)=>{
+      // this.loading.dismiss();
     });
   }
 
@@ -130,17 +149,27 @@ export class NegociosPage implements OnInit {
       this.list_ciudad = this.list_departamento[idx].ciudades;
     }
   }
-  submit(){
+  async submit(){
     let data:any = this.myForm_negocios.value;
     console.log(data);
+    if(!data.titulo) {
+      const toast = await this.toastController.create({
+        message: "Por favor llenar formulario",
+        duration: 2000
+      });
+      toast.present();
+      return false;
+    }
     return this._negocios.saved(data)
     .subscribe((res:any)=>{
       console.log("*********",res);
       let accion:any = new NegociosAction(res, 'post');
       this._store.dispatch(accion);
-      this.myForm_negocios = this.createMyForm();
+      // this.myForm_negocios = this.createMyForm();
       this.disable_button = true;
       this.data = res;
+      this.evento = res;
+      if(this.imageResponse.length >0)this.uploadImage();
     },(error)=>{
       this.disable_button = true;
       alert("Error");
@@ -149,8 +178,8 @@ export class NegociosPage implements OnInit {
   getImages() {
     this.options = {
       maximumImagesCount: 6,
-      width: 128,
-      height: 215,
+      width: 300,
+      height: 600,
       quality: 50,
       outputType: 1
     };
@@ -173,7 +202,7 @@ export class NegociosPage implements OnInit {
     data.id = this.evento.id;
     data.opt_archivo = 'negocios';
     this._archivo.upload(this.imageResponse, data).then(()=>{
-      alert("Exitoso");
+      if(this.imageResponse.length >0)alert("Exitoso");
       this.get_galeria(data.id);
     });
   }

@@ -1,6 +1,7 @@
 <ion-header translucent>
   <ion-toolbar>
-    <ion-title>Crear Publicacion</ion-title>
+    <ion-title *ngIf="!evento.id">Crear Publicacion</ion-title>
+    <ion-title *ngIf="evento.id">Editar Publicacion</ion-title>
     <ion-button slot="end" (click)="cerrarModal()" color="danger">
       <ion-icon name="close-circle-outline"></ion-icon>
     </ion-button>
@@ -33,7 +34,7 @@
             <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
           </ion-button>
           <ion-button (click)="uploadImage()" *ngIf="data.id">
-              <ion-icon name="cloud-upload"></ion-icon>
+            <ion-icon name="cloud-upload"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>

@@ -218,6 +218,9 @@ export class ProductviewComponent implements OnInit {
         this.sliderOne.slidesItems.push({id: 1, foto: "https://hostel.keralauniversity.ac.in/images/NoImage.jpg"})
       }
       this.loading.dismiss();
+    },(err)=>{
+      this.presentToast('Error galeria no encontrada');
+      this.loading.dismiss();
     });
   }
   submit_cart(opt: any) {

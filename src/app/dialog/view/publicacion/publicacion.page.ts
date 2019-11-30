@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { ComentarioService } from 'src/app/service-component/comentario.service';
 import { ReduxserService } from 'src/app/service-component/redux.service';
 import { ComentariosAction } from 'src/app/redux/app.actions';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-publicacion',
@@ -21,6 +22,7 @@ export class PublicacionPage implements OnInit {
   public slidesItems:any = [];
   public myForm_comentar:any;
   public list_comentarios:any = [];
+  public loading:any;
 
   constructor(
     private modalCtrl: ModalController,
@@ -30,27 +32,41 @@ export class PublicacionPage implements OnInit {
     public formBuilder: FormBuilder,
     public _comentario: ComentarioService,
     private _reduxer: ReduxserService,
+    public loadingController: LoadingController,
   ) { 
     this.evento = (this.navparams.get('obj')) || {};
-    console.log(this.evento)
+    // console.log(this.evento)
     this.init();
   }
 
   ngOnInit() {
+  }
+  async loadings(){
+    this.loading = await this.loadingController.create({
+      spinner: 'crescent',
+      message: 'Iniciando...',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+
+    await this.loading.present();
   }
   init(){
     if(Object.keys(this.evento).length === 0) this.cerrarModal();
     this.get_galeria(this.evento.id);
     this._store.select("name")
     .subscribe((store:any)=>{
-      console.log(store)
+      // console.log(store)
       this.data_user = store.user;
       if(Object.keys(this.data_user).length ===0) this.cerrarModal();
       if(Object.keys(store.comentarios).length === 0) {
         if(this.evento.opt === 'comentar'&& this.evento.id) this.get_comentario();
       }
       else {
-        if(this.evento.opt === 'comentar' && this.evento.id) this.validar_comentario(store.comentarios);
+        if(this.evento.opt === 'comentar' && this.evento.id) {
+          this.validar_comentario(store.comentarios);
+          // this.loading.dismiss();
+        }
       }
     });
     this.myForm_comentar = this.createMyForm();
@@ -71,6 +87,7 @@ export class PublicacionPage implements OnInit {
     });
   }
   get_galeria(id:any){
+    this.loadings();
     return this._archivo.get({
       where:{
         negocios: id
@@ -81,7 +98,12 @@ export class PublicacionPage implements OnInit {
       // console.log(rta);
       if(rta){
         this.slidesItems = rta.archivos;
+      }else{
+        this.slidesItems.push({id: 1, foto: "https://hostel.keralauniversity.ac.in/images/NoImage.jpg"})
       }
+      this.loading.dismiss();
+    },(err)=>{
+      this.loading.dismiss();
     });
   }
   validar_comentario(obj:any){
@@ -95,6 +117,7 @@ export class PublicacionPage implements OnInit {
     }
   }
   get_comentario(){
+    // this.loadings();
     let query = {
       where:{
         user: this.data_user.id
@@ -103,9 +126,12 @@ export class PublicacionPage implements OnInit {
     return this._comentario.get(query)
     .subscribe((rta:any)=>{
       rta = rta.data;
-      console.log(rta);
+      // console.log(rta);
       this.proceso_comentario(rta);
       this.list_comentarios = rta;
+      this.loading.dismiss();
+    },(err)=>{
+      this.loading.dismiss();
     });
   }
   proceso_comentario(obj:any){

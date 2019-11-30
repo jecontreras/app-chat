@@ -40,7 +40,19 @@
     <ion-refresher-content>
     </ion-refresher-content>
   </ion-refresher>
-  <ion-grid>
+
+  <ion-button (click)="toggleInfiniteScroll()" expand="block">
+    Toggle Infinite Scroll
+  </ion-button>
+
+  <ion-list *ngFor="let item of list_negocios"></ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <!-- <ion-grid>
     <ion-row class="border" *ngFor="let item of list_negocios">
       <ion-col size="12" class="border">
         <ion-grid>
@@ -51,12 +63,7 @@
                 {{ item.user.username }}
               </span>
             </ion-col>
-            <!-- <ion-col size="8">
-              <ion-text color="dark">
-                
-              </ion-text>
-            </ion-col> -->
-            <ion-col size="2" style="padding: 0;">
+            <ion-col size="2" style="padding: 0;" (click)="open_form(item)">
               <ion-icon class="icon_list" size="large" name="arrow-dropdown"></ion-icon>
             </ion-col>
           </ion-row>
@@ -79,8 +86,10 @@
       <ion-col size="4">
         <ion-text color="dark">
           <h6 (click)="like(item)">
-            <ion-icon *ngIf="item.check" color="danger" size="samll" name="heart-empty"></ion-icon><span *ngIf="item.check">Megusta</span>
-            <ion-icon *ngIf="!item.check" color="danger" size="samll" name="heart-empty"></ion-icon><span *ngIf="!item.check">Megusta</span>
+            <ion-icon *ngIf="item.check" color="danger" size="samll" name="heart-empty"></ion-icon><span
+              *ngIf="item.check">Megusta</span>
+            <ion-icon *ngIf="!item.check" color="danger" size="samll" name="heart-empty"></ion-icon><span
+              *ngIf="!item.check">Megusta</span>
           </h6>
         </ion-text>
       </ion-col>
@@ -99,17 +108,5 @@
         </ion-text>
       </ion-col>
     </ion-row>
-  </ion-grid>
-  <!-- <ion-card *ngFor="let item of list_negocios" (click)="open_form(item)">
-    <img [src]="item.foto" />
-    <ion-card-header>
-      <ion-card-subtitle>
-          <ion-icon class="ion-padding" size="large" slot="start" name="heart-empty"></ion-icon>
-      </ion-card-subtitle>
-      <ion-card-title>{{ item.titulo }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      {{ item.descripcion }}
-    </ion-card-content>
-  </ion-card> -->
+  </ion-grid> -->
 </ion-content>

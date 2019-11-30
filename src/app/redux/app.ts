@@ -45,6 +45,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
     }else{
       if(opt === 'post') lista.push(data);
     }
+    console.log(lista);
     return lista;
   }
   function validacion_key(state){
@@ -75,7 +76,7 @@ export function appReducer(state: any = APP, action: _action.actions) {
         case 'post': {
           // console.log(action.payload);
           if(!state.articulos) state.articulos = [];
-          data = proceso_data(state.articulos,action.payload, '');
+          data = proceso_data(state.articulos,action.payload, 'post');
           state.articulos = data;
           return local_Storage(state);
         }

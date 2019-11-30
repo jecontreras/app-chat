@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { ARTICULOS } from 'src/app/redux/interfax/articulos';
 import { ArticulosAction, CategoriaAction } from 'src/app/redux/app.actions';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
 import { ProductoService } from 'src/app/service-component/producto.service';
 import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker/ngx';
 import { Router } from '@angular/router';
@@ -13,6 +12,7 @@ import * as _ from 'lodash';
 import { CategoriaService } from 'src/app/service-component/categoria.service';
 import { ColorService } from 'src/app/service-component/color.services';
 import { ArchivoService } from 'src/app/service-component/archivo.services';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-producto',
@@ -25,13 +25,13 @@ export class ProductoPage implements OnInit {
   myForm_product: FormGroup;
 
   public loginForm: FormGroup;
-  public url: any = ``;
   public clone: any = {};
   public m: any = '';
   public data:any = {};
   public data_user:any;
   public disable_button:boolean = true;
   public data_img:any = [];
+  public loading:any;
   public options:any;
 
   @ViewChildren('slideWithNav') slideWithNav: IonSlides;
@@ -69,6 +69,7 @@ export class ProductoPage implements OnInit {
     private _categoria: CategoriaService,
     private _color: ColorService,
     private _archivo: ArchivoService,
+    public loadingController: LoadingController,
   ) { 
     this.evento = this.navparams.get('obj');
 
@@ -90,7 +91,6 @@ export class ProductoPage implements OnInit {
     this.deta_init();
     
     if(this.evento){
-      this.url = this.evento.foto;
       this.data = this.evento;
       this.get_galeria(this.evento.id);
       this.myForm_product.patchValue(this.evento);
@@ -104,10 +104,20 @@ export class ProductoPage implements OnInit {
     };
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     if(!this.data.id){
       this.getImages();
     }
+  }
+  async loadings(){
+    this.loading = await this.loadingController.create({
+      spinner: 'crescent',
+      message: 'Iniciando...',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+
+    await this.loading.present();
   }
   deta_init(){
     this.myForm_product = this.createMyForm();
@@ -149,6 +159,7 @@ export class ProductoPage implements OnInit {
     };
   }
   get_galeria(id){
+    // this.loadings()
     return this._archivo.get({
       where:{
         articulo: id
@@ -156,10 +167,15 @@ export class ProductoPage implements OnInit {
     })
     .subscribe((rta:any)=>{
       rta = rta.data[0];
-      // console.log(rta);
+      console.log(rta);
       if(rta){
         this.sliderOne.slidesItems = rta.archivos;
+      }else{
+        this.sliderOne.slidesItems.push({id: 1, foto: "https://hostel.keralauniversity.ac.in/images/NoImage.jpg"})
       }
+      // this.loading.dismiss();
+    },(err)=>{
+      // this.loading.dismiss();
     });
   }
   get_cateogria(){
@@ -289,8 +305,16 @@ export class ProductoPage implements OnInit {
   codigo(){
     return (Date.now().toString(36).substr(2, 3) + Math.random().toString(36).substr(2, 2)).toUpperCase(); 
   }
-  submit(){
+  async submit(){
     let data:any = this.myForm_product.value;
+    if(!data.titulo) {
+      const toast = await this.toastController.create({
+        message: "Por favor llenar formulario",
+        duration: 2000
+      });
+      toast.present();
+      return false;
+    }
     data.list_informacion = this.data.list_informacion;
     data.list_envios = this.data.list_envios;
     data.list_galeria = this.data.list_galeria;
@@ -301,9 +325,11 @@ export class ProductoPage implements OnInit {
       console.log("*********",res);
       let accion:any = new ArticulosAction(res, 'post');
       this._store.dispatch(accion);
-      this.myForm_product = this.createMyForm();
+      // this.myForm_product = this.createMyForm();
       this.disable_button = true;
       this.data = res;
+      this.evento = res;
+      if(this.imageResponse.length >0)this.uploadImage();
     },(error)=>{
       this.disable_button = true;
       alert("Error");
@@ -338,8 +364,8 @@ export class ProductoPage implements OnInit {
   getImages() {
     this.options = {
       maximumImagesCount: 6,
-      width: 128,
-      height: 215,
+      width: 300,
+      height: 600,
       quality: 50,
       outputType: 1
     };
@@ -362,7 +388,7 @@ export class ProductoPage implements OnInit {
     data.id = this.evento.id;
     data.opt_archivo = 'articulo';
     this._archivo.upload(this.imageResponse, data).then(()=>{
-      alert("Exitoso");
+      if(this.imageResponse.length >0)alert("Exitoso");
       this.get_galeria(data.id);
     });
   }

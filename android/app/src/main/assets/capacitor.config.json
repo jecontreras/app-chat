@@ -11,9 +11,11 @@
       "BackupWebStorage": "none",
       "SplashMaintainAspectRatio": "true",
       "FadeSplashScreenDuration": "300",
+      "loadUrlTimeoutValue": "700000",
       "SplashShowOnlyFirstTime": "false",
       "SplashScreen": "screen",
-      "SplashScreenDelay": "3000"
+      "SplashScreenDelay": "4000",
+      "ShowSplashScreenSpinner": "true"
     }
   }
 }

@@ -4,28 +4,32 @@
 /** Ionic CSS Variables **/
 :root {
   #ion-content-login {
-      --ion-background-color:#077d35;
-  }
-  .ion-button-login {
-    --ion-color: green;
+      --ion-background-color:#14cb8b;
   }
   .prev-icon-custom{
     --background: url(../assets/imagenes/dilisap1.png) 0 0/100% 100% no-repeat;
   }
   .prev-icon-custom.disabled{
-      opacity: 0.4;
-      cursor: default;
+      --opacity: 0.4;
+      --cursor: default;
   }
+  .titulocolor{
+    --color: #30D956;
+  }
+  .button_col{
+    --background: #2D9444;
+    --color: white;
+}
   .next-icon-custom{
       --background: url(../assets/imagenes/dilisap1.png) 0 0/100% 100% no-repeat;
   }
   @font-face {
     font-family: 'EB Garamond', serif;
-    src: url('https://fonts.googleapis.com/css?family=EB+Garamond&display=swap');//mine
+    src: url('../assets/font/font.woff2');//mine
   }
   
   * {
-    font-family: 'EB Garamond', serif;
+    font-family: 'ABeeZee', sans-serif;
   }
   /** primary **/
   --ion-color-primary: #3880ff;
